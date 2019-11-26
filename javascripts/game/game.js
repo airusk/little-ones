@@ -5,7 +5,7 @@ class Game {
     this.canvas = canvas;
     this.ctx = ctx;
 
-    // VARS for ball
+    // VARS for ball, initialized at x & y
     this.x = canvas.width / 2;
     this.y = canvas.height - 30;
 
@@ -31,6 +31,7 @@ class Game {
   draw() {
     const dx = 1;
     const dy = -1;
+    // clear before redraw
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     Ball.drawBall(this.x, this.y)
     this.x += dx;

@@ -106,6 +106,26 @@ var drawBall = function drawBall(x, y) {
 
 /***/ }),
 
+/***/ "./javascripts/game/cursor.js":
+/*!************************************!*\
+  !*** ./javascripts/game/cursor.js ***!
+  \************************************/
+/*! exports provided: getCursorPos */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCursorPos", function() { return getCursorPos; });
+var getCursorPos = function getCursorPos(canvas, event) {
+  var rect = canvas.getBoundingClientRect();
+  return {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top
+  };
+};
+
+/***/ }),
+
 /***/ "./javascripts/game/game.js":
 /*!**********************************!*\
   !*** ./javascripts/game/game.js ***!
@@ -131,7 +151,7 @@ function () {
     _classCallCheck(this, Game);
 
     this.canvas = canvas;
-    this.ctx = ctx; // VARS for ball
+    this.ctx = ctx; // VARS for ball, initialized at x & y
 
     this.x = canvas.width / 2;
     this.y = canvas.height - 30;
@@ -162,7 +182,8 @@ function () {
     key: "draw",
     value: function draw() {
       var dx = 1;
-      var dy = -1;
+      var dy = -1; // clear before redraw
+
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       _anims_ball__WEBPACK_IMPORTED_MODULE_0__["drawBall"](this.x, this.y);
       this.x += dx;
@@ -230,11 +251,18 @@ var loop = function loop(game) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game_game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game/game */ "./javascripts/game/game.js");
 /* harmony import */ var _game_loop__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game/loop */ "./javascripts/game/loop.js");
+/* harmony import */ var _game_cursor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./game/cursor */ "./javascripts/game/cursor.js");
+
 
 
 window.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById("mainCanvas");
   var ctx = canvas.getContext("2d");
+  canvas.addEventListener('mousemove', function (event) {
+    var cursorPos = _game_cursor__WEBPACK_IMPORTED_MODULE_2__["getCursorPos"](canvas, event);
+    var coords = [cursorPos.x, cursorPos.y];
+    console.log(coords);
+  });
   var game = new _game_game__WEBPACK_IMPORTED_MODULE_0__["default"](canvas, ctx);
   window.game = game;
   Object(_game_loop__WEBPACK_IMPORTED_MODULE_1__["loop"])(game);
