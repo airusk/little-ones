@@ -12,7 +12,7 @@ module.exports = {
   },
   // lets us debug in js files we wrote instead of bundled webpack file
   devtool: 'source-map',
-  // sets up babel to transpile ES6/React code to ES5, browser-compatible code
+  // sets up babel to transpile ES6 code to ES5, browser-compatible code
   module: {
     rules: [
       {

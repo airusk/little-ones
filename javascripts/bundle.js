@@ -86,14 +86,143 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./javascripts/game/game.js":
+/*!**********************************!*\
+  !*** ./javascripts/game/game.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Game =
+/*#__PURE__*/
+function () {
+  function Game(canvas, ctx) {
+    _classCallCheck(this, Game);
+
+    this.canvas = canvas;
+    this.ctx = ctx;
+    this.x = canvas.width / 2;
+    this.y = canvas.height - 30;
+    this.initialState = this.initialState.bind(this);
+    this.draw = this.draw.bind(this);
+    this.drawBall = this.drawBall.bind(this);
+    this.update = this.update.bind(this); // mainLoop Vars
+
+    this.lastRender;
+    this.stopMainLoop;
+    this.lastTick = 0;
+    this.tickLength = 0;
+    this.loop = this.loop.bind(this);
+  }
+
+  _createClass(Game, [{
+    key: "initialState",
+    value: function initialState() {
+      // Rectangle
+      this.ctx.beginPath();
+      this.ctx.rect(250, 150, 50, 50);
+      this.ctx.fillStyle = "#9A0055";
+      this.ctx.fill();
+      this.ctx.closePath(); // Rectangle
+
+      this.update();
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      // setInterval(this.draw, 10);
+      this.draw();
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+      var dx = 1;
+      var dy = -1;
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.drawBall();
+      this.x += dx;
+      this.y += dy;
+    }
+  }, {
+    key: "drawBall",
+    value: function drawBall() {
+      this.ctx.beginPath();
+      this.ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
+      this.ctx.fillStyle = "#0095DD";
+      this.ctx.fill();
+      this.ctx.closePath();
+    } // Main Game Loop
+
+  }, {
+    key: "loop",
+    value: function loop() {
+      var _this = this;
+
+      var mainLoop = function mainLoop(tFrame) {
+        _this.stopMainLoop = window.requestAnimationFrame(mainLoop); // window.cancelAnimationFrame(this.stopMainLoop);
+
+        var nextTick = _this.lastTick + _this.tickLength;
+        var numTicks = 0;
+
+        if (tFrame > nextTick) {
+          var timeSinceTick = tFrame - _this.lastTick;
+          numTicks = Math.floor(timeSinceTick / _this.tickLength);
+        }
+
+        queueUpdates(numTicks); // render( tFrame );
+      };
+
+      var queueUpdates = function queueUpdates(numTicks) {
+        for (var i = 0; i < numTicks; i++) {
+          _this.lastTick = _this.lastTick + _this.tickLength;
+
+          _this.update(_this.lastTick);
+        }
+      };
+
+      this.lastTick = performance.now();
+      this.lastRender = this.lastTick;
+      this.tickLength = 25; // setInitialState();
+
+      mainLoop(performance.now());
+    }
+  }]);
+
+  return Game;
+}(); // Main Game Loop
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Game);
+
+/***/ }),
+
 /***/ "./javascripts/main.js":
 /*!*****************************!*\
   !*** ./javascripts/main.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _game_game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game/game */ "./javascripts/game/game.js");
 
+window.addEventListener('DOMContentLoaded', function () {
+  var canvas = document.getElementById("mainCanvas");
+  var ctx = canvas.getContext("2d");
+  var game = new _game_game__WEBPACK_IMPORTED_MODULE_0__["default"](canvas, ctx);
+  window.game = game; // game.initialState();
+
+  game.loop();
+});
 
 /***/ })
 
