@@ -1,4 +1,5 @@
 import * as Ball from "./anims/ball";
+import * as Cursor from "./event_listeners/cursor";
 
 class Game {
   constructor(canvas, ctx){
@@ -11,8 +12,18 @@ class Game {
 
     this.initialState = this.initialState.bind(this);
     this.draw = this.draw.bind(this);
-    // this.drawBall = this.drawBall.bind(this);
     this.update = this.update.bind(this);
+
+    this.instigatorPos = [];
+
+    // Cursor Event Listener
+    canvas.addEventListener('mousemove', (event) => {
+      let cursorPos = Cursor.getCursorPos(canvas, event);
+      let coords = [cursorPos.x, cursorPos.y]
+      this.instigatorPos = coords;
+      console.log(this.instigatorPos);
+    });
+
   }
   initialState() {
     // Rectangle

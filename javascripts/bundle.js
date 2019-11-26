@@ -106,10 +106,10 @@ var drawBall = function drawBall(x, y) {
 
 /***/ }),
 
-/***/ "./javascripts/game/cursor.js":
-/*!************************************!*\
-  !*** ./javascripts/game/cursor.js ***!
-  \************************************/
+/***/ "./javascripts/game/event_listeners/cursor.js":
+/*!****************************************************!*\
+  !*** ./javascripts/game/event_listeners/cursor.js ***!
+  \****************************************************/
 /*! exports provided: getCursorPos */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -136,6 +136,7 @@ var getCursorPos = function getCursorPos(canvas, event) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _anims_ball__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./anims/ball */ "./javascripts/game/anims/ball.js");
+/* harmony import */ var _event_listeners_cursor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./event_listeners/cursor */ "./javascripts/game/event_listeners/cursor.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -144,10 +145,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
 var Game =
 /*#__PURE__*/
 function () {
   function Game(canvas, ctx) {
+    var _this = this;
+
     _classCallCheck(this, Game);
 
     this.canvas = canvas;
@@ -156,9 +160,16 @@ function () {
     this.x = canvas.width / 2;
     this.y = canvas.height - 30;
     this.initialState = this.initialState.bind(this);
-    this.draw = this.draw.bind(this); // this.drawBall = this.drawBall.bind(this);
-
+    this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
+    this.instigatorPos = []; // Cursor Event Listener
+
+    canvas.addEventListener('mousemove', function (event) {
+      var cursorPos = _event_listeners_cursor__WEBPACK_IMPORTED_MODULE_1__["getCursorPos"](canvas, event);
+      var coords = [cursorPos.x, cursorPos.y];
+      _this.instigatorPos = coords;
+      console.log(_this.instigatorPos);
+    });
   }
 
   _createClass(Game, [{
@@ -211,7 +222,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loop", function() { return loop; });
 var loop = function loop(game) {
   var mainLoop = function mainLoop(tFrame) {
-    game.stopMainLoop = window.requestAnimationFrame(mainLoop); // window.cancelAnimationFrame(game.stopMainLoop);
+    game.stopMainLoop = window.requestAnimationFrame(mainLoop); // window.cancelAnimationFrame(game.stopMainLoop); // Function to reset game without refresh
 
     var nextTick = game.lastTick + game.tickLength;
     var numTicks = 0;
@@ -251,18 +262,11 @@ var loop = function loop(game) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game_game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game/game */ "./javascripts/game/game.js");
 /* harmony import */ var _game_loop__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game/loop */ "./javascripts/game/loop.js");
-/* harmony import */ var _game_cursor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./game/cursor */ "./javascripts/game/cursor.js");
-
 
 
 window.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById("mainCanvas");
   var ctx = canvas.getContext("2d");
-  canvas.addEventListener('mousemove', function (event) {
-    var cursorPos = _game_cursor__WEBPACK_IMPORTED_MODULE_2__["getCursorPos"](canvas, event);
-    var coords = [cursorPos.x, cursorPos.y];
-    console.log(coords);
-  });
   var game = new _game_game__WEBPACK_IMPORTED_MODULE_0__["default"](canvas, ctx);
   window.game = game;
   Object(_game_loop__WEBPACK_IMPORTED_MODULE_1__["loop"])(game);

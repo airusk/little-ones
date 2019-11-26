@@ -1,7 +1,7 @@
 export const loop = (game) => {
   const mainLoop = (tFrame) => {
     game.stopMainLoop = window.requestAnimationFrame(mainLoop);
-    // window.cancelAnimationFrame(game.stopMainLoop);
+    // window.cancelAnimationFrame(game.stopMainLoop); // Function to reset game without refresh
     var nextTick = game.lastTick + game.tickLength;
     var numTicks = 0;
 
