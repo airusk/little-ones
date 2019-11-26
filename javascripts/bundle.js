@@ -106,6 +106,20 @@ var drawBall = function drawBall(x, y) {
 
 /***/ }),
 
+/***/ "./javascripts/game/behaviors.js":
+/*!***************************************!*\
+  !*** ./javascripts/game/behaviors.js ***!
+  \***************************************/
+/*! exports provided: attraction */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attraction", function() { return attraction; });
+var attraction = function attraction(instigatorPos, receptorPos) {};
+
+/***/ }),
+
 /***/ "./javascripts/game/event_listeners/cursor.js":
 /*!****************************************************!*\
   !*** ./javascripts/game/event_listeners/cursor.js ***!
@@ -137,6 +151,7 @@ var getCursorPos = function getCursorPos(canvas, event) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _anims_ball__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./anims/ball */ "./javascripts/game/anims/ball.js");
 /* harmony import */ var _event_listeners_cursor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./event_listeners/cursor */ "./javascripts/game/event_listeners/cursor.js");
+/* harmony import */ var _behaviors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./behaviors */ "./javascripts/game/behaviors.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -154,6 +169,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
 var Game =
 /*#__PURE__*/
 function () {
@@ -166,17 +182,22 @@ function () {
     this.ctx = ctx; // VARS for ball, initialized at x & y
 
     this.x = canvas.width / 2;
-    this.y = canvas.height - 30;
+    this.y = canvas.height - 30; // Cursor/Instigator Position
+
+    this.instigatorPos = []; // Array of receptor coordinates
+
+    this.receptors = [[canvas.width / 2, canvas.height - 30], [canvas.width / 3, canvas.height - 5]];
     this.initialState = this.initialState.bind(this);
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
-    this.instigatorPos = []; // Cursor Event Listener
+    this.handleBehavior = this.handleBehavior.bind(this); // current behavior
+
+    this.behavior = _behaviors__WEBPACK_IMPORTED_MODULE_2__["attraction"]; // Cursor Event Listener
 
     canvas.addEventListener('mousemove', function (event) {
       var cursorPos = _event_listeners_cursor__WEBPACK_IMPORTED_MODULE_1__["getCursorPos"](canvas, event);
       var coords = [cursorPos.x, cursorPos.y];
       _this.instigatorPos = coords;
-      console.log(_this.instigatorPos);
     });
   }
 
@@ -204,8 +225,37 @@ function () {
       // const dy = -1;
       // clear before redraw
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      _anims_ball__WEBPACK_IMPORTED_MODULE_0__["drawBall"].apply(_anims_ball__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(this.instigatorPos)); // this.x += dx;
+      _anims_ball__WEBPACK_IMPORTED_MODULE_0__["drawBall"].apply(_anims_ball__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(this.instigatorPos));
+      this.handleBehavior(this.behavior); // this.x += dx;
       // this.y += dy;
+    } // Takes in a behavior to apply to receptors
+
+  }, {
+    key: "handleBehavior",
+    value: function handleBehavior(behaviorFunc) {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.receptors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var receptor = _step.value;
+          behaviorFunc(this.instigatorPos, receptor);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
     }
   }]);
 
