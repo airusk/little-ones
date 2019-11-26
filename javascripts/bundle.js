@@ -86,6 +86,26 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./javascripts/game/anims/ball.js":
+/*!****************************************!*\
+  !*** ./javascripts/game/anims/ball.js ***!
+  \****************************************/
+/*! exports provided: drawBall */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "drawBall", function() { return drawBall; });
+var drawBall = function drawBall(x, y) {
+  game.ctx.beginPath();
+  game.ctx.arc(x, y, 10, 0, Math.PI * 2);
+  game.ctx.fillStyle = "#0095DD";
+  game.ctx.fill();
+  game.ctx.closePath();
+};
+
+/***/ }),
+
 /***/ "./javascripts/game/game.js":
 /*!**********************************!*\
   !*** ./javascripts/game/game.js ***!
@@ -95,11 +115,14 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _anims_ball__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./anims/ball */ "./javascripts/game/anims/ball.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 var Game =
 /*#__PURE__*/
@@ -108,19 +131,14 @@ function () {
     _classCallCheck(this, Game);
 
     this.canvas = canvas;
-    this.ctx = ctx;
+    this.ctx = ctx; // VARS for ball
+
     this.x = canvas.width / 2;
     this.y = canvas.height - 30;
     this.initialState = this.initialState.bind(this);
-    this.draw = this.draw.bind(this);
-    this.drawBall = this.drawBall.bind(this);
-    this.update = this.update.bind(this); // mainLoop Vars
+    this.draw = this.draw.bind(this); // this.drawBall = this.drawBall.bind(this);
 
-    this.lastRender;
-    this.stopMainLoop;
-    this.lastTick = 0;
-    this.tickLength = 0;
-    this.loop = this.loop.bind(this);
+    this.update = this.update.bind(this);
   }
 
   _createClass(Game, [{
@@ -138,7 +156,6 @@ function () {
   }, {
     key: "update",
     value: function update() {
-      // setInterval(this.draw, 10);
       this.draw();
     }
   }, {
@@ -147,52 +164,9 @@ function () {
       var dx = 1;
       var dy = -1;
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.drawBall();
+      _anims_ball__WEBPACK_IMPORTED_MODULE_0__["drawBall"](this.x, this.y);
       this.x += dx;
       this.y += dy;
-    }
-  }, {
-    key: "drawBall",
-    value: function drawBall() {
-      this.ctx.beginPath();
-      this.ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
-      this.ctx.fillStyle = "#0095DD";
-      this.ctx.fill();
-      this.ctx.closePath();
-    } // Main Game Loop
-
-  }, {
-    key: "loop",
-    value: function loop() {
-      var _this = this;
-
-      var mainLoop = function mainLoop(tFrame) {
-        _this.stopMainLoop = window.requestAnimationFrame(mainLoop); // window.cancelAnimationFrame(this.stopMainLoop);
-
-        var nextTick = _this.lastTick + _this.tickLength;
-        var numTicks = 0;
-
-        if (tFrame > nextTick) {
-          var timeSinceTick = tFrame - _this.lastTick;
-          numTicks = Math.floor(timeSinceTick / _this.tickLength);
-        }
-
-        queueUpdates(numTicks); // render( tFrame );
-      };
-
-      var queueUpdates = function queueUpdates(numTicks) {
-        for (var i = 0; i < numTicks; i++) {
-          _this.lastTick = _this.lastTick + _this.tickLength;
-
-          _this.update(_this.lastTick);
-        }
-      };
-
-      this.lastTick = performance.now();
-      this.lastRender = this.lastTick;
-      this.tickLength = 25; // setInitialState();
-
-      mainLoop(performance.now());
     }
   }]);
 
@@ -201,6 +175,47 @@ function () {
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Game);
+
+/***/ }),
+
+/***/ "./javascripts/game/loop.js":
+/*!**********************************!*\
+  !*** ./javascripts/game/loop.js ***!
+  \**********************************/
+/*! exports provided: loop */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loop", function() { return loop; });
+var loop = function loop(game) {
+  var mainLoop = function mainLoop(tFrame) {
+    game.stopMainLoop = window.requestAnimationFrame(mainLoop); // window.cancelAnimationFrame(game.stopMainLoop);
+
+    var nextTick = game.lastTick + game.tickLength;
+    var numTicks = 0;
+
+    if (tFrame > nextTick) {
+      var timeSinceTick = tFrame - game.lastTick;
+      numTicks = Math.floor(timeSinceTick / game.tickLength);
+    }
+
+    queueUpdates(numTicks); // render( tFrame );
+  };
+
+  var queueUpdates = function queueUpdates(numTicks) {
+    for (var i = 0; i < numTicks; i++) {
+      game.lastTick = game.lastTick + game.tickLength;
+      game.update(game.lastTick);
+    }
+  };
+
+  game.lastTick = performance.now();
+  game.lastRender = game.lastTick;
+  game.tickLength = 25; // setInitialState(); // performs whatever tasks are leftover before the mainloop must run.
+
+  mainLoop(performance.now());
+};
 
 /***/ }),
 
@@ -214,14 +229,15 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game_game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game/game */ "./javascripts/game/game.js");
+/* harmony import */ var _game_loop__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game/loop */ "./javascripts/game/loop.js");
+
 
 window.addEventListener('DOMContentLoaded', function () {
   var canvas = document.getElementById("mainCanvas");
   var ctx = canvas.getContext("2d");
   var game = new _game_game__WEBPACK_IMPORTED_MODULE_0__["default"](canvas, ctx);
-  window.game = game; // game.initialState();
-
-  game.loop();
+  window.game = game;
+  Object(_game_loop__WEBPACK_IMPORTED_MODULE_1__["loop"])(game);
 });
 
 /***/ })
