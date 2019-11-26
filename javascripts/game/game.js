@@ -40,20 +40,14 @@ class Game {
   }
 
   draw() {
-    const dx = 1;
-    const dy = -1;
+    // const dx = 1;
+    // const dy = -1;
     // clear before redraw
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    Ball.drawBall(this.x, this.y)
-    this.x += dx;
-    this.y += dy;
+    Ball.drawBall(...this.instigatorPos);
+    // this.x += dx;
+    // this.y += dy;
   }
 } 
-
-
-
-
-
-// Main Game Loop
 
 export default Game;
