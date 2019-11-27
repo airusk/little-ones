@@ -1,3 +1,5 @@
-export const attraction = (instigatorPos, receptorPos) => {
-  
+export const attraction = (instigatorPos, receptorPos, vel, acc) => {
+  if (instigatorPos !== receptorPos){
+    
+  }
 }

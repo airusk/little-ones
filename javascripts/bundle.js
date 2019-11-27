@@ -116,7 +116,9 @@ var drawBall = function drawBall(x, y) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attraction", function() { return attraction; });
-var attraction = function attraction(instigatorPos, receptorPos) {};
+var attraction = function attraction(instigatorPos, receptorPos, vel, acc) {
+  if (instigatorPos !== receptorPos) {}
+};
 
 /***/ }),
 
@@ -240,7 +242,7 @@ function () {
       try {
         for (var _iterator = this.receptors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var receptor = _step.value;
-          behaviorFunc(this.instigatorPos, receptor);
+          behaviorFunc(this.instigatorPos, receptor, 3, 1);
         }
       } catch (err) {
         _didIteratorError = true;
@@ -300,7 +302,7 @@ var loop = function loop(game) {
 
   game.lastTick = performance.now();
   game.lastRender = game.lastTick;
-  game.tickLength = 25; // setInitialState(); // performs whatever tasks are leftover before the mainloop must run.
+  game.tickLength = 16; // setInitialState(); // performs whatever tasks are leftover before the mainloop must run.
 
   mainLoop(performance.now());
 };

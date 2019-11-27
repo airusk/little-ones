@@ -66,7 +66,7 @@ class Game {
   // Takes in a behavior to apply to receptors
   handleBehavior(behaviorFunc){
     for( let receptor of this.receptors){
-      behaviorFunc(this.instigatorPos, receptor);
+      behaviorFunc(this.instigatorPos, receptor, 3, 1);
     }
   }
 } 

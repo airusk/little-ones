@@ -22,7 +22,7 @@ export const loop = (game) => {
 
   game.lastTick = performance.now();
   game.lastRender = game.lastTick;
-  game.tickLength = 25;
+  game.tickLength = 16;
 
   // setInitialState(); // performs whatever tasks are leftover before the mainloop must run.
   mainLoop(performance.now());
