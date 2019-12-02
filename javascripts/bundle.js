@@ -147,8 +147,7 @@ var attraction = function attraction(receptorPos, instigatorPos, distanceDelta) 
 
     default:
       x = receptorPos[0];
-  } // debugger
-
+  }
 
   return [y, x];
 };
@@ -233,7 +232,7 @@ function () {
 
     this.instigatorPos = [0, 0]; // Array of receptor coordinates
 
-    this.receptors = [[canvas.width / 2, canvas.height - 30], [canvas.width / 3, canvas.height - 5]];
+    this.receptors = [[canvas.width, canvas.height], [canvas.width / 3, canvas.height - 5]];
     this.initialState = this.initialState.bind(this);
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
@@ -245,7 +244,7 @@ function () {
     this.startTime = new Date();
     this.totalTime = 1; // time in seconds
 
-    this.rate = 10; // px to move per totalTime 
+    this.rate = 100; // px to move per totalTime 
     // Cursor Event Listener
 
     canvas.addEventListener('mousemove', function (event) {
@@ -279,10 +278,7 @@ function () {
   }, {
     key: "draw",
     value: function draw() {
-      // const dx = 1;
-      // const dy = -1;
-      this.handleBehavior(this.behavior); // clear before redraw
-
+      // clear before redraw
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       _anims_ball__WEBPACK_IMPORTED_MODULE_0__["drawBall"].apply(_anims_ball__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(this.instigatorPos));
       var _iteratorNormalCompletion = true;
@@ -292,7 +288,6 @@ function () {
       try {
         for (var _iterator = this.receptors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var receptor = _step.value;
-          // debugger
           _anims_ball__WEBPACK_IMPORTED_MODULE_0__["drawBall"].apply(_anims_ball__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(receptor));
         }
       } catch (err) {
@@ -310,13 +305,15 @@ function () {
         }
       }
 
-      this.startTime = new Date(); // this.x += dx;
-      // this.y += dy;
+      this.receptors = this.handleBehavior(this.behavior); // debugger
+
+      this.startTime = new Date();
     } // Takes in a behavior to apply to receptors
 
   }, {
     key: "handleBehavior",
     value: function handleBehavior(behaviorFunc) {
+      var newPos = [];
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
@@ -325,7 +322,7 @@ function () {
         for (var _iterator2 = this.receptors[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var receptor = _step2.value;
           receptor = behaviorFunc(receptor, this.instigatorPos, _util_util__WEBPACK_IMPORTED_MODULE_3__["distanceDelta"](this.startTime, this.totalTime, this.rate));
-          console.log(receptor);
+          newPos.push(receptor);
         }
       } catch (err) {
         _didIteratorError2 = true;
@@ -341,6 +338,8 @@ function () {
           }
         }
       }
+
+      return newPos;
     }
   }]);
 
@@ -404,6 +403,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "distanceDelta", function() { return distanceDelta; });
 var distanceDelta = function distanceDelta(startTime, totalTime, rate) {
   var timeElapsed = (new Date() - startTime) / 1000; // time elapsed in seconds
+
+  var distance = rate * timeElapsed / totalTime; // console.log("time elapsed: "+ timeElapsed);
   // debugger
 
   return rate * timeElapsed / totalTime;

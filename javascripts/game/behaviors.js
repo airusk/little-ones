@@ -27,8 +27,6 @@ export const attraction = (receptorPos, instigatorPos, distanceDelta) => {
       x = receptorPos[0];
   }
 
-  // debugger
-
   return [y , x];
 }
 
