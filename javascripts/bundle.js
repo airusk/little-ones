@@ -305,8 +305,7 @@ function () {
         }
       }
 
-      this.receptors = this.handleBehavior(this.behavior); // debugger
-
+      this.receptors = this.handleBehavior(this.behavior);
       this.startTime = new Date();
     } // Takes in a behavior to apply to receptors
 

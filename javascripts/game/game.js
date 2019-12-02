@@ -68,7 +68,6 @@ class Game {
       Ball.drawBall(...receptor);
     }
     this.receptors = this.handleBehavior(this.behavior);
-    // debugger
     this.startTime = new Date();
   }
 
