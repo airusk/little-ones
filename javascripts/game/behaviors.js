@@ -1,4 +1,4 @@
-export const attraction = (receptorPos, instigatorPos, distanceDelta) => {
+export const attraction = (receptorPos, instigatorPos, distanceDelta, threshold) => {
   // position of receptor in relation to instigator
   let y = receptorPos[0]
   let x = receptorPos[1]
@@ -6,29 +6,36 @@ export const attraction = (receptorPos, instigatorPos, distanceDelta) => {
   const yRel = spaceshipOperator(y, instigatorPos[0]);
   const xRel = spaceshipOperator(x, instigatorPos[1]);
 
-  switch(yRel){
-    case (-1):
-      y += distanceDelta;
-      break;
-    case (1):
-      y -= distanceDelta;
-      break;
-    default:
-      y = receptorPos[0];
-  }
-  switch (xRel) {
-    case (-1):
-      x += distanceDelta;
-      break;
-    case (1):
-      x -= distanceDelta;
-      break;
-    default:
-      x = receptorPos[0];
-  }
+  if (inThreshold(...receptorPos,...instigatorPos, threshold)){
+    switch(yRel){
+      case (-1):
+        y += distanceDelta;
+        break;
+      case (1):
+        y -= distanceDelta;
+        break;
+      default:
+        y = receptorPos[0];
+    }
+    switch (xRel) {
+      case (-1):
+        x += distanceDelta;
+        break;
+      case (1):
+        x -= distanceDelta;
+        break;
+      default:
+        x = receptorPos[0];
+    }
+  } 
 
   return [y , x];
 }
+
+export const fear = (receptorPos, instigatorPos, distanceDelta) => {
+
+}
+
 
 const spaceshipOperator = (rec,ins) => {
   if (rec < ins){
@@ -39,3 +46,7 @@ const spaceshipOperator = (rec,ins) => {
     return 0;
   }
 }
+
+const inThreshold = (y1,x1,y2,x2, threshold) => (
+  (Math.abs(y1 - y2) < threshold) && (Math.abs(x1 - x2) < threshold)
+);

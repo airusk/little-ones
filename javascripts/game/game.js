@@ -28,6 +28,8 @@ class Game {
     this.handleBehavior = this.handleBehavior.bind(this);
     // current behavior
     this.behavior = Behaviors.attraction;
+    // max distance for interation between instigator and receptors.
+    this.threshold = 150;
 
     // startTime instantiation for all moving objects
     this.startTime = new Date();
@@ -78,7 +80,8 @@ class Game {
       receptor = behaviorFunc(
         receptor, 
         this.instigatorPos, 
-        Util.distanceDelta(this.startTime,this.totalTime,this.rate)
+        Util.distanceDelta(this.startTime,this.totalTime,this.rate),
+        this.threshold
       );
       newPos.push(receptor);
     }
