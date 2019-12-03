@@ -8,12 +8,6 @@ class Game {
     this.canvas = canvas;
     this.ctx = ctx;
     this.threshold = 150;
-    // VARS for ball, initialized at x & y
-    // this.x = canvas.width / 2;
-    // this.y = canvas.height - 30;
-
-    // Cursor/Instigator Position
-    // this.instigatorPos = [0, 0];
     // Array of receptor objects
     this.receptors = Util.receptorGenerator(
       5, 
@@ -25,7 +19,6 @@ class Game {
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState();
-
     this.handleBehavior = this.handleBehavior.bind(this);
     // current behavior
     // this.behavior = Behaviors.repulsion;
@@ -36,13 +29,19 @@ class Game {
     this.totalTime = 1; // time in seconds
     this.rate = 100; // px to move per totalTime 
 
-    // Cursor Event Listener
+    // Cursor event listeners
     canvas.addEventListener('mousemove', (event) => {
       let cursorPos = Cursor.getCursorPos(canvas, event);
       let coords = [cursorPos.x, cursorPos.y]
       this.instigatorPos = coords;
     });
 
+    canvas.addEventListener('click',(event) =>{
+      for (let receptor of this.receptors) {
+        if (receptor.behavior === Behaviors.repulsion) receptor.behavior = Behaviors.attraction
+        else receptor.behavior = Behaviors.repulsion;
+      }
+    });
   }
   initialState() {
     // Rectangle
@@ -65,7 +64,9 @@ class Game {
   draw() {
     // clear before redraw
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    Ball.drawBall(...this.instigatorPos);
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    if (this.instigatorPos) Ball.drawBall(...this.instigatorPos);
     // debugger
     for( let receptor of this.receptors){
       Ball.drawBall(...receptor.position);
@@ -76,7 +77,6 @@ class Game {
 
   // Takes in a behavior to apply to receptors
   handleBehavior(){
-    // let newPos = [];
     for( let receptor of this.receptors){
       receptor.position = receptor.behavior(
         receptor.position, 
@@ -84,9 +84,7 @@ class Game {
         Util.distanceDelta(this.startTime,this.totalTime,this.rate)
         // this.threshold
       );
-      // newPos.push(receptor);
     }
-    // return newPos;
   }
 } 
 
