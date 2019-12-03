@@ -1,4 +1,4 @@
-export const attraction = (receptorPos, instigatorPos, distanceDelta, threshold = 100) => {
+export const attraction = (receptorPos, instigatorPos, distanceDelta, threshold = 150) => {
   // position of receptor in relation to instigator
   let y = receptorPos[0]
   let x = receptorPos[1]
@@ -32,7 +32,7 @@ export const attraction = (receptorPos, instigatorPos, distanceDelta, threshold 
   return [y , x];
 }
 
-export const repulsion = (receptorPos, instigatorPos, distanceDelta, threshold = 50) => {
+export const repulsion = (receptorPos, instigatorPos, distanceDelta, threshold = 100) => {
   let y = receptorPos[0]
   let x = receptorPos[1]
 

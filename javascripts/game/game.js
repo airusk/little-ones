@@ -7,18 +7,19 @@ class Game {
   constructor(canvas, ctx){
     this.canvas = canvas;
     this.ctx = ctx;
-
+    this.threshold = 150;
     // VARS for ball, initialized at x & y
-    this.x = canvas.width / 2;
-    this.y = canvas.height - 30;
+    // this.x = canvas.width / 2;
+    // this.y = canvas.height - 30;
 
     // Cursor/Instigator Position
-    this.instigatorPos = [0, 0];
-    // Array of receptor coordinates
-    this.receptors = [
-      [canvas.width, canvas.height],
-      [canvas.width / 3, canvas.height - 5]
-    ];
+    // this.instigatorPos = [0, 0];
+    // Array of receptor objects
+    this.receptors = Util.receptorGenerator(
+      5, 
+      canvas.height-this.threshold, 
+      canvas.width-this.threshold
+    );
 
     this.initialState = this.initialState.bind(this);
     this.draw = this.draw.bind(this);
@@ -27,9 +28,8 @@ class Game {
 
     this.handleBehavior = this.handleBehavior.bind(this);
     // current behavior
-    this.behavior = Behaviors.repulsion;
+    // this.behavior = Behaviors.repulsion;
     // max distance for interation between instigator and receptors.
-    this.threshold = 150;
 
     // startTime instantiation for all moving objects
     this.startTime = new Date();
@@ -66,26 +66,27 @@ class Game {
     // clear before redraw
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     Ball.drawBall(...this.instigatorPos);
+    // debugger
     for( let receptor of this.receptors){
-      Ball.drawBall(...receptor);
+      Ball.drawBall(...receptor.position);
     }
-    this.receptors = this.handleBehavior(this.behavior);
+    this.handleBehavior();
     this.startTime = new Date();
   }
 
   // Takes in a behavior to apply to receptors
-  handleBehavior(behaviorFunc){
-    let newPos = [];
+  handleBehavior(){
+    // let newPos = [];
     for( let receptor of this.receptors){
-      receptor = behaviorFunc(
-        receptor, 
+      receptor.position = receptor.behavior(
+        receptor.position, 
         this.instigatorPos, 
         Util.distanceDelta(this.startTime,this.totalTime,this.rate)
         // this.threshold
       );
-      newPos.push(receptor);
+      // newPos.push(receptor);
     }
-    return newPos;
+    // return newPos;
   }
 } 
 
