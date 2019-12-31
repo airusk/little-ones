@@ -1,3 +1,5 @@
+import * as Util from "./util/util";
+
 export const attraction = (receptorPos, instigatorPos, distanceDelta, threshold = 150) => {
   // position of receptor in relation to instigator
   let y = receptorPos[0]
@@ -6,7 +8,7 @@ export const attraction = (receptorPos, instigatorPos, distanceDelta, threshold 
   const yRel = spaceshipOperator(y, instigatorPos[0]);
   const xRel = spaceshipOperator(x, instigatorPos[1]);
 
-  if (inThreshold(...receptorPos,...instigatorPos, threshold)){
+  if (Util.inThreshold(...receptorPos,...instigatorPos, threshold)){
     switch(yRel){
       case (-1):
         y += distanceDelta;
@@ -39,7 +41,7 @@ export const repulsion = (receptorPos, instigatorPos, distanceDelta, threshold =
   const yRel = spaceshipOperator(y, instigatorPos[0]);
   const xRel = spaceshipOperator(x, instigatorPos[1]);
 
-  if (inThreshold(...receptorPos, ...instigatorPos, threshold)) {
+  if (Util.inThreshold(...receptorPos, ...instigatorPos, threshold)) {
     switch (yRel) {
       case (-1):
         y -= distanceDelta;
@@ -76,7 +78,3 @@ const spaceshipOperator = (rec,ins) => {
     return 0;
   }
 }
-
-const inThreshold = (y1,x1,y2,x2, threshold) => (
-  (Math.abs(y1 - y2) < threshold) && (Math.abs(x1 - x2) < threshold)
-);

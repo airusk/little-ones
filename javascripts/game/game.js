@@ -10,7 +10,7 @@ class Game {
     this.threshold = 150;
     // Array of receptor objects
     this.receptors = Util.receptorGenerator(
-      5, 
+      10, 
       canvas.height-this.threshold, 
       canvas.width-this.threshold
     );
@@ -19,15 +19,13 @@ class Game {
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState();
-    this.handleBehavior = this.handleBehavior.bind(this);
-    // current behavior
-    // this.behavior = Behaviors.repulsion;
-    // max distance for interation between instigator and receptors.
+    this.handleBehavior = this.handleBehavior.bind(this)
+    this.handleMovement = this.handleMovement.bind(this);
 
     // startTime instantiation for all moving objects
     this.startTime = new Date();
     this.totalTime = 1; // time in seconds
-    this.rate = 100; // px to move per totalTime 
+    this.rate = 300; // px to move per totalTime 
 
     // Cursor event listeners
     canvas.addEventListener('mousemove', (event) => {
@@ -36,9 +34,12 @@ class Game {
       this.instigatorPos = coords;
     });
 
+    //toggle behaviors
     canvas.addEventListener('click',(event) =>{
       for (let receptor of this.receptors) {
-        if (receptor.behavior === Behaviors.repulsion) receptor.behavior = Behaviors.attraction
+        if (receptor.behavior === Behaviors.repulsion){
+          receptor.behavior = Behaviors.attraction
+        }
         else receptor.behavior = Behaviors.repulsion;
       }
     });
@@ -75,6 +76,13 @@ class Game {
     this.startTime = new Date();
   }
 
+  // handles all movement
+  handleMovement(){
+    for (let receptor of this.receptors) {
+      // if this.instigatorPos
+    }
+    // this.handleBehavior();
+  }
   // Takes in a behavior to apply to receptors
   handleBehavior(){
     for( let receptor of this.receptors){

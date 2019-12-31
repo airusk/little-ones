@@ -5,6 +5,7 @@ class Receptor{
     this.movementPattern = this.movementPattern.bind(this);
   }
 
+  // default movement
   movementPattern() {
     
   }

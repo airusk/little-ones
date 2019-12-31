@@ -18,6 +18,10 @@ export const receptorGenerator = (total, maxHeight, maxWidth) => {
   return receptors;
 }
 
+export const inThreshold = (y1, x1, y2, x2, threshold) => (
+  (Math.abs(y1 - y2) < threshold) && (Math.abs(x1 - x2) < threshold)
+);
+
 const randomPos = (maxHeight, maxWidth) =>(
   [Math.random() * maxHeight, Math.random() * maxWidth]
 )

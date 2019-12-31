@@ -117,6 +117,7 @@ var drawBall = function drawBall(x, y) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attraction", function() { return attraction; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "repulsion", function() { return repulsion; });
+/* harmony import */ var _util_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/util */ "./javascripts/game/util/util.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -124,6 +125,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 
 var attraction = function attraction(receptorPos, instigatorPos, distanceDelta) {
   var threshold = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 150;
@@ -133,7 +135,7 @@ var attraction = function attraction(receptorPos, instigatorPos, distanceDelta) 
   var yRel = spaceshipOperator(y, instigatorPos[0]);
   var xRel = spaceshipOperator(x, instigatorPos[1]);
 
-  if (inThreshold.apply(void 0, _toConsumableArray(receptorPos).concat(_toConsumableArray(instigatorPos), [threshold]))) {
+  if (_util_util__WEBPACK_IMPORTED_MODULE_0__["inThreshold"].apply(_util_util__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(receptorPos).concat(_toConsumableArray(instigatorPos), [threshold]))) {
     switch (yRel) {
       case -1:
         y += distanceDelta;
@@ -170,7 +172,7 @@ var repulsion = function repulsion(receptorPos, instigatorPos, distanceDelta) {
   var yRel = spaceshipOperator(y, instigatorPos[0]);
   var xRel = spaceshipOperator(x, instigatorPos[1]);
 
-  if (inThreshold.apply(void 0, _toConsumableArray(receptorPos).concat(_toConsumableArray(instigatorPos), [threshold]))) {
+  if (_util_util__WEBPACK_IMPORTED_MODULE_0__["inThreshold"].apply(_util_util__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(receptorPos).concat(_toConsumableArray(instigatorPos), [threshold]))) {
     switch (yRel) {
       case -1:
         y -= distanceDelta;
@@ -209,10 +211,6 @@ var spaceshipOperator = function spaceshipOperator(rec, ins) {
   } else {
     return 0;
   }
-};
-
-var inThreshold = function inThreshold(y1, x1, y2, x2, threshold) {
-  return Math.abs(y1 - y2) < threshold && Math.abs(x1 - x2) < threshold;
 };
 
 /***/ }),
@@ -281,27 +279,26 @@ function () {
     this.ctx = ctx;
     this.threshold = 150; // Array of receptor objects
 
-    this.receptors = _util_util__WEBPACK_IMPORTED_MODULE_3__["receptorGenerator"](5, canvas.height - this.threshold, canvas.width - this.threshold);
+    this.receptors = _util_util__WEBPACK_IMPORTED_MODULE_3__["receptorGenerator"](10, canvas.height - this.threshold, canvas.width - this.threshold);
     this.initialState = this.initialState.bind(this);
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState();
-    this.handleBehavior = this.handleBehavior.bind(this); // current behavior
-    // this.behavior = Behaviors.repulsion;
-    // max distance for interation between instigator and receptors.
-    // startTime instantiation for all moving objects
+    this.handleBehavior = this.handleBehavior.bind(this);
+    this.handleMovement = this.handleMovement.bind(this); // startTime instantiation for all moving objects
 
     this.startTime = new Date();
     this.totalTime = 1; // time in seconds
 
-    this.rate = 100; // px to move per totalTime 
+    this.rate = 300; // px to move per totalTime 
     // Cursor event listeners
 
     canvas.addEventListener('mousemove', function (event) {
       var cursorPos = _event_listeners_cursor__WEBPACK_IMPORTED_MODULE_1__["getCursorPos"](canvas, event);
       var coords = [cursorPos.x, cursorPos.y];
       _this.instigatorPos = coords;
-    });
+    }); //toggle behaviors
+
     canvas.addEventListener('click', function (event) {
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
@@ -310,7 +307,10 @@ function () {
       try {
         for (var _iterator = _this.receptors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var receptor = _step.value;
-          if (receptor.behavior === _behaviors__WEBPACK_IMPORTED_MODULE_2__["repulsion"]) receptor.behavior = _behaviors__WEBPACK_IMPORTED_MODULE_2__["attraction"];else receptor.behavior = _behaviors__WEBPACK_IMPORTED_MODULE_2__["repulsion"];
+
+          if (receptor.behavior === _behaviors__WEBPACK_IMPORTED_MODULE_2__["repulsion"]) {
+            receptor.behavior = _behaviors__WEBPACK_IMPORTED_MODULE_2__["attraction"];
+          } else receptor.behavior = _behaviors__WEBPACK_IMPORTED_MODULE_2__["repulsion"];
         }
       } catch (err) {
         _didIteratorError = true;
@@ -385,11 +385,11 @@ function () {
 
       this.handleBehavior();
       this.startTime = new Date();
-    } // Takes in a behavior to apply to receptors
+    } // handles all movement
 
   }, {
-    key: "handleBehavior",
-    value: function handleBehavior() {
+    key: "handleMovement",
+    value: function handleMovement() {
       var _iteratorNormalCompletion3 = true;
       var _didIteratorError3 = false;
       var _iteratorError3 = undefined;
@@ -397,9 +397,9 @@ function () {
       try {
         for (var _iterator3 = this.receptors[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
           var receptor = _step3.value;
-          receptor.position = receptor.behavior(receptor.position, this.instigatorPos, _util_util__WEBPACK_IMPORTED_MODULE_3__["distanceDelta"](this.startTime, this.totalTime, this.rate) // this.threshold
-          );
-        }
+        } // if this.instigatorPos
+        // this.handleBehavior();
+
       } catch (err) {
         _didIteratorError3 = true;
         _iteratorError3 = err;
@@ -411,6 +411,35 @@ function () {
         } finally {
           if (_didIteratorError3) {
             throw _iteratorError3;
+          }
+        }
+      }
+    } // Takes in a behavior to apply to receptors
+
+  }, {
+    key: "handleBehavior",
+    value: function handleBehavior() {
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = this.receptors[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var receptor = _step4.value;
+          receptor.position = receptor.behavior(receptor.position, this.instigatorPos, _util_util__WEBPACK_IMPORTED_MODULE_3__["distanceDelta"](this.startTime, this.totalTime, this.rate) // this.threshold
+          );
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+            _iterator4["return"]();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
           }
         }
       }
@@ -489,7 +518,8 @@ function () {
     this.position = position;
     this.behavior = behavior;
     this.movementPattern = this.movementPattern.bind(this);
-  }
+  } // default movement
+
 
   _createClass(Receptor, [{
     key: "movementPattern",
@@ -507,13 +537,14 @@ function () {
 /*!***************************************!*\
   !*** ./javascripts/game/util/util.js ***!
   \***************************************/
-/*! exports provided: distanceDelta, receptorGenerator */
+/*! exports provided: distanceDelta, receptorGenerator, inThreshold */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "distanceDelta", function() { return distanceDelta; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receptorGenerator", function() { return receptorGenerator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "inThreshold", function() { return inThreshold; });
 /* harmony import */ var _receptor_receptor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../receptor/receptor */ "./javascripts/game/receptor/receptor.js");
 /* harmony import */ var _behaviors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../behaviors */ "./javascripts/game/behaviors.js");
 
@@ -535,6 +566,9 @@ var receptorGenerator = function receptorGenerator(total, maxHeight, maxWidth) {
   }
 
   return receptors;
+};
+var inThreshold = function inThreshold(y1, x1, y2, x2, threshold) {
+  return Math.abs(y1 - y2) < threshold && Math.abs(x1 - x2) < threshold;
 };
 
 var randomPos = function randomPos(maxHeight, maxWidth) {
