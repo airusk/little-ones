@@ -8,12 +8,15 @@ class Game {
     this.canvas = canvas;
     this.ctx = ctx;
     this.threshold = 150;
-    // Array of receptor objects
     this.receptors = Util.receptorGenerator(
       5, 
       canvas.height-this.threshold, 
       canvas.width-this.threshold
     );
+    this.receptorDelta = 1;
+    this.swapReceptorMovement = setInterval(()=> {
+      this.receptorDelta *= -1;
+    }, 1000);
 
     this.initialState = this.initialState.bind(this);
     this.draw = this.draw.bind(this);
@@ -22,12 +25,13 @@ class Game {
     this.handleBehavior = this.handleBehavior.bind(this);
     // current behavior
     // this.behavior = Behaviors.repulsion;
-    // max distance for interation between instigator and receptors.
 
     // startTime instantiation for all moving objects
     this.startTime = new Date();
     this.totalTime = 1; // time in seconds
     this.rate = 100; // px to move per totalTime 
+
+    
 
     // Cursor event listeners
     canvas.addEventListener('mousemove', (event) => {
@@ -67,11 +71,13 @@ class Game {
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     if (this.instigatorPos) Ball.drawBall(...this.instigatorPos);
-    // debugger
     for( let receptor of this.receptors){
       Ball.drawBall(...receptor.position);
     }
     this.handleBehavior();
+    for (let receptor of this.receptors) {
+      receptor.movementPattern(this.receptorDelta);
+    }
     this.startTime = new Date();
   }
 

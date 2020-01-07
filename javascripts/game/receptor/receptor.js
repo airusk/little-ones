@@ -5,8 +5,10 @@ class Receptor{
     this.movementPattern = this.movementPattern.bind(this);
   }
 
-  movementPattern() {
-    
+  movementPattern(delta) {
+    // this.position[0] += 2;
+    // this.position[1] += 2;
+    this.position[1] += delta;
   }
 }
 
