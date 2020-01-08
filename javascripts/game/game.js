@@ -1,4 +1,4 @@
-import * as Ball from "./anims/ball";
+import * as Animation from "./anims/receptor_animations";
 import * as Cursor from "./event_listeners/cursor";
 import * as Behaviors from "./behaviors";
 import * as Util from "./util/util";
@@ -9,20 +9,21 @@ class Game {
     this.ctx = ctx;
     this.threshold = 150;
     this.receptors = Util.receptorGenerator(
-      5, 
-      canvas.height-this.threshold, 
-      canvas.width-this.threshold
+      50, 
+      canvas.width,
+      canvas.height
     );
-    this.receptorDelta = 1;
+    this.receptorDelta = .25;
     this.swapReceptorMovement = setInterval(()=> {
       this.receptorDelta *= -1;
-    }, 1000);
+    }, 3000);
 
     this.initialState = this.initialState.bind(this);
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState();
     this.handleBehavior = this.handleBehavior.bind(this);
+    this.sortReceptors = this.sortReceptors.bind(this);
     // current behavior
     // this.behavior = Behaviors.repulsion;
 
@@ -32,7 +33,6 @@ class Game {
     this.rate = 100; // px to move per totalTime 
 
     
-
     // Cursor event listeners
     canvas.addEventListener('mousemove', (event) => {
       let cursorPos = Cursor.getCursorPos(canvas, event);
@@ -70,27 +70,38 @@ class Game {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    if (this.instigatorPos) Ball.drawBall(...this.instigatorPos);
-    for( let receptor of this.receptors){
-      Ball.drawBall(...receptor.position);
+    if (this.instigatorPos) Animation.drawBall(...this.instigatorPos);
+    for(let receptor of this.receptors){
+      Animation.drawBall(...receptor.position);
+    }
+    // this.sortReceptors();
+    for(let i = 0; i < this.receptors.length-1; i++){
+      Animation.drawConnection(
+        this.receptors[i].position,
+        this.receptors[i+1].position
+      );
     }
     this.handleBehavior();
-    for (let receptor of this.receptors) {
-      receptor.movementPattern(this.receptorDelta);
-    }
     this.startTime = new Date();
   }
 
   // Takes in a behavior to apply to receptors
   handleBehavior(){
-    for( let receptor of this.receptors){
+    for(let receptor of this.receptors){
       receptor.position = receptor.behavior(
         receptor.position, 
         this.instigatorPos, 
-        Util.distanceDelta(this.startTime,this.totalTime,this.rate)
-        // this.threshold
+        Util.distanceDelta(this.startTime,this.totalTime,this.rate),
+        150
       );
+      // receptor.movementPattern(this.receptorDelta);
     }
+  }
+  sortReceptors(){
+    this.receptors.sort(function (a, b) {
+      if (a.position[0] == b.position[0]) return a.position[1] - b.position[1];
+      return a.position[0] - b.position[0];
+    });
   }
 } 
 

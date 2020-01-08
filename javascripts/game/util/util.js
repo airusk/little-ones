@@ -9,10 +9,10 @@ export const distanceDelta = (startTime, totalTime, rate) =>{
   return (rate * timeElapsed / totalTime);
 }
 
-export const receptorGenerator = (total, maxHeight, maxWidth) => {
+export const receptorGenerator = (total, maxWidth, maxHeight) => {
   let receptors = [];
   for (let i = 0; i < total; i++) {
-    const receptor = new Receptor(randomPos(maxHeight,maxWidth), Behavior.repulsion);
+    const receptor = new Receptor(randomPos(maxWidth,maxHeight), Behavior.repulsion);
     receptors.push(receptor);
   }
   return receptors;
