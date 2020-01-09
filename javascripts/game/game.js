@@ -1,7 +1,8 @@
 import * as Animation from "./anims/receptor_animations";
 import * as Cursor from "./event_listeners/cursor";
-import * as Type from "./receptor/type";
 import * as Util from "./util/util";
+import Single from "./receptor/single";
+import Strum from "./receptor/strum";
 import Receptor from "./receptor/receptor";
 
 class Game {
@@ -13,25 +14,29 @@ class Game {
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState();
     this.sortReceptors = this.sortReceptors.bind(this);
-    // current behavior
-    // this.behavior = Behaviors.repulsion;
     
     // startTime instantiation for all moving objects
     this.startTime = new Date();
     this.totalTime = 1; // time in seconds
     this.rate = 100; // px to move per totalTime 
-    this.instigatorPos;
+    this.cursorPos;
+    this.types = ["single", "strum"]
     this.receptors = [];
     this.drawBoard();
     // Cursor event listeners
     canvas.addEventListener('mousemove', (event) => {
       let cursorPos = Cursor.getCursorPos(canvas, event);
       let coords = [cursorPos.x, cursorPos.y]
-      this.instigatorPos = coords;
+      this.cursorPos = coords;
     });
 
-    canvas.addEventListener('click',(event) =>{
-      const receptor = new Receptor(this.instigatorPos, Type.single);
+    canvas.addEventListener('click',(event) => {
+      const receptor = new Single(this.cursorPos);
+      this.receptors.push(receptor);
+    });
+    canvas.addEventListener('contextmenu',(event) => {
+      event.preventDefault();
+      const receptor = new Strum(this.cursorPos);
       this.receptors.push(receptor);
     });
   }
@@ -49,7 +54,7 @@ class Game {
     
     
     // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    // if (this.instigatorPos) Animation.drawBall(...this.instigatorPos);
+    // if (this.cursorPos) Animation.drawBall(...this.cursorPos);
     if (this.receptors){
       // this.sortReceptors();
       for (let i = 0; i < this.receptors.length - 1; i++) {
@@ -74,8 +79,9 @@ class Game {
   }
 
   drawBoard(){
-    const noteSlice = this.canvas.width/8
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    const noteSlice = this.canvas.width/8
     this.ctx.fillStyle = "#3373b3";
     this.ctx.fillRect(0, 0, noteSlice, this.canvas.height);
     this.ctx.fillStyle = "#5fb2ef";
