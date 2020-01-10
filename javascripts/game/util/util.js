@@ -18,6 +18,20 @@ export const receptorGenerator = (total, maxWidth, maxHeight) => {
   return receptors;
 }
 
+export const divineNote = (position, maxLength, numSlices) => {
+  const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C2'];
+  const sliceLength = length / numSlices;
+  let note;
+  for(n in numSlices){
+    if (position > n * sliceLength){
+      note = notes[n-1];
+    }
+  }
+  debugger
+  return note;
+};
+
+
 const randomPos = (maxHeight, maxWidth) =>(
   [Math.random() * maxHeight, Math.random() * maxWidth]
 )

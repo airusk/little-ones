@@ -1,6 +1,7 @@
 class Receptor{
-  constructor(position, fill = "white"){
+  constructor(position, note, fill = "white"){
     this.position = position;
+    this.note = note;
     this.fill = fill;
     this.drawSelf = this.drawSelf.bind(this);
   }

@@ -12,8 +12,9 @@ class Game {
     
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
-    this.setInitialState = this.setInitialState();
+    this.setInitialState = this.setInitialState.bind(this);
     this.sortReceptors = this.sortReceptors.bind(this);
+    this.divineNote = this.divineNote.bind(this);
     
     // startTime instantiation for all moving objects
     this.startTime = new Date();
@@ -22,26 +23,27 @@ class Game {
     this.cursorPos;
     this.types = ["single", "strum"]
     this.receptors = [];
+    this.setInitialState();
+    // this.drawBoard();
+  }
+  setInitialState(){
     this.drawBoard();
     // Cursor event listeners
-    canvas.addEventListener('mousemove', (event) => {
-      let cursorPos = Cursor.getCursorPos(canvas, event);
+    this.canvas.addEventListener('mousemove', (event) => {
+      let cursorPos = Cursor.getCursorPos(this.canvas, event);
       let coords = [cursorPos.x, cursorPos.y]
       this.cursorPos = coords;
     });
-
-    canvas.addEventListener('click',(event) => {
-      const receptor = new Single(this.cursorPos);
+    this.canvas.addEventListener('click', (event) => {
+      const note = this.divineNote(this.cursorPos[0], this.canvas.width, 8);
+      const receptor = new Single(this.cursorPos, note);
       this.receptors.push(receptor);
     });
-    canvas.addEventListener('contextmenu',(event) => {
+    this.canvas.addEventListener('contextmenu', (event) => {
       event.preventDefault();
       const receptor = new Strum(this.cursorPos);
       this.receptors.push(receptor);
     });
-  }
-  setInitialState(){
-    this.drawBoard();
   }
 
   update() {
@@ -98,6 +100,17 @@ class Game {
     this.ctx.fillRect(noteSlice * 6, 0, noteSlice, this.canvas.height);
     this.ctx.fillStyle = "#3373b3";
     this.ctx.fillRect(noteSlice * 7, 0, noteSlice, this.canvas.height);
+  }
+  divineNote(position, maxLength, numSlices) {
+    const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C2'];
+    const sliceLength = maxLength / numSlices;
+    let note;
+    for (n in numSlices) {
+      if (position > n * sliceLength) {
+        note = notes[n - 1];
+      }
+    }
+    return note;
   }
 } 
 
