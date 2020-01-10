@@ -20,17 +20,22 @@ export const receptorGenerator = (total, maxWidth, maxHeight) => {
 
 export const divineNote = (position, maxLength, numSlices) => {
   const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C2'];
-  const sliceLength = length / numSlices;
+  const sliceLength = maxLength / numSlices;
   let note;
-  for(n in numSlices){
-    if (position > n * sliceLength){
-      note = notes[n-1];
+  for(let i = 0; i < numSlices + 1; i ++){
+    if ((i * sliceLength) > position){
+      note = notes[i-1];
+      break;
     }
   }
-  debugger
+  console.log(note);
   return note;
 };
 
+export const playAudio = (filename) => {
+  const audio = new Audio(`./assets/${filename}`);
+  audio.play();
+} 
 
 const randomPos = (maxHeight, maxWidth) =>(
   [Math.random() * maxHeight, Math.random() * maxWidth]

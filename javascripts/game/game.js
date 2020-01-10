@@ -14,7 +14,6 @@ class Game {
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState.bind(this);
     this.sortReceptors = this.sortReceptors.bind(this);
-    this.divineNote = this.divineNote.bind(this);
     
     // startTime instantiation for all moving objects
     this.startTime = new Date();
@@ -24,26 +23,10 @@ class Game {
     this.types = ["single", "strum"]
     this.receptors = [];
     this.setInitialState();
-    // this.drawBoard();
   }
   setInitialState(){
     this.drawBoard();
-    // Cursor event listeners
-    this.canvas.addEventListener('mousemove', (event) => {
-      let cursorPos = Cursor.getCursorPos(this.canvas, event);
-      let coords = [cursorPos.x, cursorPos.y]
-      this.cursorPos = coords;
-    });
-    this.canvas.addEventListener('click', (event) => {
-      const note = this.divineNote(this.cursorPos[0], this.canvas.width, 8);
-      const receptor = new Single(this.cursorPos, note);
-      this.receptors.push(receptor);
-    });
-    this.canvas.addEventListener('contextmenu', (event) => {
-      event.preventDefault();
-      const receptor = new Strum(this.cursorPos);
-      this.receptors.push(receptor);
-    });
+    this.setupEventListeners();
   }
 
   update() {
@@ -51,12 +34,6 @@ class Game {
   }
 
   draw() {
-    // clear before redraw
-    // note board
-    
-    
-    // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    // if (this.cursorPos) Animation.drawBall(...this.cursorPos);
     if (this.receptors){
       // this.sortReceptors();
       for (let i = 0; i < this.receptors.length - 1; i++) {
@@ -72,7 +49,6 @@ class Game {
     this.startTime = new Date();
   }
 
-  // Takes in a behavior to apply to receptors
   sortReceptors(){
     this.receptors.sort(function (a, b) {
       if (a.position[0] == b.position[0]) return a.position[1] - b.position[1];
@@ -101,16 +77,25 @@ class Game {
     this.ctx.fillStyle = "#3373b3";
     this.ctx.fillRect(noteSlice * 7, 0, noteSlice, this.canvas.height);
   }
-  divineNote(position, maxLength, numSlices) {
-    const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C2'];
-    const sliceLength = maxLength / numSlices;
-    let note;
-    for (n in numSlices) {
-      if (position > n * sliceLength) {
-        note = notes[n - 1];
-      }
-    }
-    return note;
+
+  setupEventListeners(){
+    // Cursor event listeners
+    this.canvas.addEventListener('mousemove', (event) => {
+      let cursorPos = Cursor.getCursorPos(this.canvas, event);
+      let coords = [cursorPos.x, cursorPos.y]
+      this.cursorPos = coords;
+    });
+    this.canvas.addEventListener('click', (event) => {
+      const note = Util.divineNote(this.cursorPos[0], this.canvas.width, 8);
+      const receptor = new Single(this.cursorPos, note);
+      this.receptors.push(receptor);
+    });
+    this.canvas.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+      const note = Util.divineNote(this.cursorPos[0], this.canvas.width, 8);
+      const receptor = new Strum(this.cursorPos, note);
+      this.receptors.push(receptor);
+    });
   }
 } 
 
