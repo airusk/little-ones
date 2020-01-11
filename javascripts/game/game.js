@@ -27,6 +27,7 @@ class Game {
   setInitialState(){
     this.drawBoard();
     this.setupEventListeners();
+    console.log("initial state setup!");
   }
 
   update() {
@@ -96,6 +97,19 @@ class Game {
       const receptor = new Strum(this.cursorPos, note);
       this.receptors.push(receptor);
     });
+    debugger
+    // temporary keyup listener
+    window.addEventListener('keyup', (event) => {
+      if(event.keyCode === 32){
+        this.playAll();
+      }
+    });
+  }
+
+  playAll(){
+    for (let receptor of this.receptors){
+      Util.playAudio(receptor.audio);
+    }
   }
 } 
 
