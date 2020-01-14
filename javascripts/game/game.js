@@ -97,19 +97,24 @@ class Game {
       const receptor = new Strum(this.cursorPos, note);
       this.receptors.push(receptor);
     });
-    debugger
     // temporary keyup listener
     window.addEventListener('keyup', (event) => {
       if(event.keyCode === 32){
-        this.playAll();
+        this.playAll(this.receptors);
       }
     });
   }
 
-  playAll(){
-    for (let receptor of this.receptors){
-      Util.playAudio(receptor.audio);
+  playAll(audioArray){
+    let index = 0;
+    const playAudio = (index) => {
+      if (index > audioArray.length-1) return;
+      const currentAudio = new Audio(`./assets/${audioArray[index].soundFile}`);
+      index++;
+      currentAudio.play();
+      setTimeout(() => {playAudio(index);},500);
     }
+    playAudio(index);
   }
 } 
 
