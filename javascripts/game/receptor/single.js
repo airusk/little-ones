@@ -5,7 +5,6 @@ class Single extends Receptor {
   constructor(position, note){
     super(position, note, "black")
     this.soundFile = "dog_bark_".concat(note, ".ogg");
-    console.log(this.soundFile);
     Util.playAudio(this.soundFile);
   }
 }

@@ -4,10 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script type="text/javascript"src="./javascripts/bundle.js"></script>
+  <link rel="stylesheet" type="text/css" href="./stylesheets/reset.css">
+  <link rel="stylesheet" type="text/css" href="./stylesheets/game_ui.css">
+  <script type="text/javascript" src="./javascripts/bundle.js"></script>
   <title>little ones</title>
 </head>
 <body>
-  <canvas id="mainCanvas" width="900" height="600"></canvas>
+  <div class="gamePage">
+    <div class="game">
+      <canvas id="mainCanvas" width="900" height="600"></canvas>
+    </div>
+    <div class="gameUI">      
+      <button class="chain" id="chain-1">Chain 1</button>
+      <button class="chain" id="chain-2">Chain 2</button>
+      <button class="chain" id="chain-3">Chain 3</button>
+      <button class="chain" id="chain-4">Chain 4</button>
+      <button class="chain" id="chain-5">Chain 5</button>
+      <button class="chain" id="chain-6">Chain 6</button>
+      <button class="chain" id="chain-7">Chain 7</button>
+      <button class="chain" id="chain-8">Chain 8</button>
+      <button class="chain-action" id="clear-button">Clear</button>
+      <button class="chain-action" id="play-button">▶</button>
+    </div>
+  </div>
 </body>
 </html>

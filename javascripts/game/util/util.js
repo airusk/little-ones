@@ -18,12 +18,13 @@ export const receptorGenerator = (total, maxWidth, maxHeight) => {
   return receptors;
 }
 
-export const divineNote = (position, maxLength, numSlices) => {
+export const divineNote = (position, maxLength, maxHeight, numSlices) => {
+  let note;
+  if (position[1] > maxHeight || position[0] > maxLength) return note;
   const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C2'];
   const sliceLength = maxLength / numSlices;
-  let note;
   for(let i = 0; i < numSlices + 1; i ++){
-    if ((i * sliceLength) > position){
+    if ((i * sliceLength) > position[0]){
       note = notes[i-1];
       break;
     }
@@ -37,6 +38,6 @@ export const playAudio = (filename) => {
   audio.play();
 } 
 
-const randomPos = (maxHeight, maxWidth) =>(
+const randomPos = (maxHeight, maxWidth) => (
   [Math.random() * maxHeight, Math.random() * maxWidth]
-)
+);

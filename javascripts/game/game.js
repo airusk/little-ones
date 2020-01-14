@@ -22,10 +22,12 @@ class Game {
     this.cursorPos;
     this.types = ["single", "strum"]
     this.receptors = [];
+    this.panelWidth = this.canvas.width;
+    this.panelHeight = this.canvas.height;
     this.setInitialState();
   }
   setInitialState(){
-    this.drawBoard();
+    this.drawBoard(this.panelWidth, this.panelHeight);
     this.setupEventListeners();
     console.log("initial state setup!");
   }
@@ -57,26 +59,28 @@ class Game {
     });
   }
 
-  drawBoard(){
+  drawBoard(panelWidth, panelHeight){
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    
-    const noteSlice = this.canvas.width/8
+    this.ctx.fillStyle = "gray";
+    this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+    const noteSlice = panelWidth/8;
     this.ctx.fillStyle = "#3373b3";
-    this.ctx.fillRect(0, 0, noteSlice, this.canvas.height);
+    this.ctx.fillRect(0, 0, noteSlice, panelHeight);
     this.ctx.fillStyle = "#5fb2ef";
-    this.ctx.fillRect(noteSlice * 1, 0, noteSlice, this.canvas.height);
+    this.ctx.fillRect(noteSlice * 1, 0, noteSlice, panelHeight);
     this.ctx.fillStyle = "#cc7aa8";
-    this.ctx.fillRect(noteSlice * 2, 0, noteSlice, this.canvas.height);
+    this.ctx.fillRect(noteSlice * 2, 0, noteSlice, panelHeight);
     this.ctx.fillStyle = "#32a073";
-    this.ctx.fillRect(noteSlice * 3, 0, noteSlice, this.canvas.height);
+    this.ctx.fillRect(noteSlice * 3, 0, noteSlice, panelHeight);
     this.ctx.fillStyle = "#d36027";
-    this.ctx.fillRect(noteSlice * 4, 0, noteSlice, this.canvas.height);
+    this.ctx.fillRect(noteSlice * 4, 0, noteSlice, panelHeight);
     this.ctx.fillStyle = "#e79f27";
-    this.ctx.fillRect(noteSlice * 5, 0, noteSlice, this.canvas.height);
+    this.ctx.fillRect(noteSlice * 5, 0, noteSlice, panelHeight);
     this.ctx.fillStyle = "#f2e647";
-    this.ctx.fillRect(noteSlice * 6, 0, noteSlice, this.canvas.height);
+    this.ctx.fillRect(noteSlice * 6, 0, noteSlice, panelHeight);
     this.ctx.fillStyle = "#3373b3";
-    this.ctx.fillRect(noteSlice * 7, 0, noteSlice, this.canvas.height);
+    this.ctx.fillRect(noteSlice * 7, 0, noteSlice, panelHeight);
+
   }
 
   setupEventListeners(){
@@ -87,15 +91,19 @@ class Game {
       this.cursorPos = coords;
     });
     this.canvas.addEventListener('click', (event) => {
-      const note = Util.divineNote(this.cursorPos[0], this.canvas.width, 8);
-      const receptor = new Single(this.cursorPos, note);
-      this.receptors.push(receptor);
+      const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
+      if (note){
+        const receptor = new Single(this.cursorPos, note);
+        this.receptors.push(receptor);
+      }
     });
     this.canvas.addEventListener('contextmenu', (event) => {
       event.preventDefault();
-      const note = Util.divineNote(this.cursorPos[0], this.canvas.width, 8);
-      const receptor = new Strum(this.cursorPos, note);
-      this.receptors.push(receptor);
+      const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
+      if (note) {
+        const receptor = new Strum(this.cursorPos, note);
+        this.receptors.push(receptor);
+      }
     });
     // temporary keyup listener
     window.addEventListener('keyup', (event) => {
@@ -103,16 +111,20 @@ class Game {
         this.playAll(this.receptors);
       }
     });
+    const playButton = document.getElementById("play-button");
+    playButton.addEventListener('click', (event) => {
+      this.playAll(this.receptors);
+    });
   }
 
   playAll(audioArray){
     let index = 0;
-    const playAudio = (index) => {
+    const playAudio = (index) => { 
       if (index > audioArray.length-1) return;
       const currentAudio = new Audio(`./assets/${audioArray[index].soundFile}`);
       index++;
       currentAudio.play();
-      setTimeout(() => {playAudio(index);},500);
+      setTimeout(() => { playAudio(index); }, 500);
     }
     playAudio(index);
   }
