@@ -1,6 +1,10 @@
+body{
+  background-color: rgb(50, 50, 50);
+}
 .gamePage{
   display: flex;
   flex-direction: column;
+  margin-top: 50px;
   width: 100%;
   height: 100%;
 }
@@ -16,9 +20,19 @@
   margin-right: auto;
   width: 900px;
 }
+
+.gameUI :disabled:hover{
+  background-color: white;
+  cursor: default;
+}
+
 .gameUI :hover{
-  background-color: grey;
+  background-color: darkgray;
   cursor: pointer;
+}
+
+.chain{
+  font-size: 18px;
 }
 
 .chain-action{

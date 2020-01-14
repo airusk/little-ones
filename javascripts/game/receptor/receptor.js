@@ -1,18 +1,22 @@
 class Receptor{
-  constructor(position, note, fill = "white"){
+  constructor(position, note){
     this.position = position;
     this.note = note;
-    this.fill = fill;
     this.drawSelf = this.drawSelf.bind(this);
   }
   
-  drawSelf(x, y, fill) {
-    fill = this.fill;
-    game.ctx.beginPath();
-    game.ctx.arc(x, y, 12, 0, Math.PI * 2);
-    game.ctx.fillStyle = fill;
-    game.ctx.fill();
-    game.ctx.closePath();
+  // drawSelf(x, y, fill) {
+  //   fill = this.fill;
+  //   game.ctx.beginPath();
+  //   game.ctx.arc(x, y, 12, 0, Math.PI * 2);
+  //   game.ctx.fillStyle = fill;
+  //   game.ctx.fill();
+  //   game.ctx.closePath();
+  // }
+  drawSelf(x, y) {
+    let img = new Image(60,60);
+    img.src = `./assets/img/${this.imgFile}`;
+    game.ctx.drawImage(img, x-30, y-30, img.width, img.height);
   }
 }
 

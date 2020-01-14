@@ -7,5 +7,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const game = new Game(canvas, ctx);
   window.game = game;
   loop(game);
+  console.log("Credit: icons from 'https://www.flaticon.com/authors/freepik'")
 });
 

@@ -1,7 +1,7 @@
 import * as Animation from "./anims/receptor_animations";
 import * as Cursor from "./event_listeners/cursor";
 import * as Util from "./util/util";
-import Single from "./receptor/single";
+import Bark from "./receptor/bark";
 import Strum from "./receptor/strum";
 import Receptor from "./receptor/receptor";
 
@@ -20,7 +20,6 @@ class Game {
     this.totalTime = 1; // time in seconds
     this.rate = 100; // px to move per totalTime 
     this.cursorPos;
-    this.types = ["single", "strum"]
     this.receptors = [];
     this.panelWidth = this.canvas.width;
     this.panelHeight = this.canvas.height;
@@ -93,7 +92,7 @@ class Game {
     this.canvas.addEventListener('click', (event) => {
       const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
       if (note){
-        const receptor = new Single(this.cursorPos, note);
+        const receptor = new Bark(this.cursorPos, note);
         this.receptors.push(receptor);
       }
     });
@@ -122,9 +121,13 @@ class Game {
     const playAudio = (index) => { 
       if (index > audioArray.length-1) return;
       const currentAudio = new Audio(`./assets/${audioArray[index].soundFile}`);
-      index++;
+      audioArray[index].fill = "green";
       currentAudio.play();
-      setTimeout(() => { playAudio(index); }, 500);
+      setTimeout(() => { 
+        audioArray[index].fill = "black";
+        index++;
+        playAudio(index);
+      }, 500);
     }
     playAudio(index);
   }
