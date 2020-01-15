@@ -10,6 +10,9 @@ class Game {
     this.canvas = canvas;
     this.ctx = ctx;
     
+    this.overlayCanvas = document.getElementById("overlay-canvas");
+    this.overlayCtx = this.overlayCanvas.getContext("2d");
+
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState.bind(this);
@@ -21,6 +24,7 @@ class Game {
     this.rate = 100; // px to move per totalTime 
     this.cursorPos;
     this.receptors = [];
+    this.outlinePositions = [];
     this.panelWidth = this.canvas.width;
     this.panelHeight = this.canvas.height;
     this.setInitialState();
@@ -46,6 +50,9 @@ class Game {
       }
       for(let receptor of this.receptors){
         receptor.drawSelf(...receptor.position);
+      }
+      for(let outlinePos of this.outlinePositions){
+        Animation.drawOutline(...outlinePos);
       }
     }
     this.startTime = new Date();
@@ -84,19 +91,20 @@ class Game {
 
   setupEventListeners(){
     // Cursor event listeners
-    this.canvas.addEventListener('mousemove', (event) => {
-      let cursorPos = Cursor.getCursorPos(this.canvas, event);
+    // overlay canvas event listeners
+    this.overlayCanvas.addEventListener('mousemove', (event) => {
+      let cursorPos = Cursor.getCursorPos(this.overlayCanvas, event);
       let coords = [cursorPos.x, cursorPos.y]
       this.cursorPos = coords;
     });
-    this.canvas.addEventListener('click', (event) => {
+    this.overlayCanvas.addEventListener('click', (event) => {
       const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
-      if (note){
+      if (note) {
         const receptor = new Bark(this.cursorPos, note);
         this.receptors.push(receptor);
       }
     });
-    this.canvas.addEventListener('contextmenu', (event) => {
+    this.overlayCanvas.addEventListener('contextmenu', (event) => {
       event.preventDefault();
       const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
       if (note) {
@@ -104,6 +112,7 @@ class Game {
         this.receptors.push(receptor);
       }
     });
+
     // temporary keyup listener
     window.addEventListener('keyup', (event) => {
       if(event.keyCode === 32){
@@ -120,12 +129,14 @@ class Game {
     let index = 0;
     const playAudio = (index) => { 
       if (index > audioArray.length-1) return;
-      const currentAudio = new Audio(`./assets/sounds/${audioArray[index].soundFile}`);
-      // audioArray[index].fill = "green";
+      const receptor = audioArray[index];
+      const currentAudio = new Audio(`./assets/sounds/${receptor.soundFile}`);
+      this.outlinePositions.push(receptor.position);
       currentAudio.play();
-      setTimeout(() => { 
-        // audioArray[index].fill = "black";
-        index++;
+      setTimeout(() => {
+        this.outlinePositions.shift();
+        this.overlayCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        ++index;
         playAudio(index);
       }, 500);
     }

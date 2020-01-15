@@ -12,7 +12,8 @@
 <body>
   <div class="gamePage">
     <div class="game">
-      <canvas id="mainCanvas" width="900" height="600"></canvas>
+      <canvas class="canvas" id="overlay-canvas" width="900" height="600"></canvas>
+      <canvas class="canvas" id="main-canvas" width="900" height="600"></canvas>
     </div>
     <div class="gameUI">      
       <button class="chain" id="chain-1">Chain 1</button>
@@ -23,8 +24,11 @@
       <button class="chain" id="chain-6">Chain 6</button>
       <button class="chain" id="chain-7">Chain 7</button>
       <button class="chain" id="chain-8">Chain 8</button>
-      <button class="chain-action" id="clear-button" disabled>Clear</button>
-      <button class="chain-action" id="play-button">▶</button>
+      <div class="chain-actions">
+        <button class="chain-action" id="undo-button" disabled>Undo</button>
+        <button class="chain-action" id="clear-button" disabled>Clear</button>
+        <button class="chain-action" id="play-button">▶</button>
+      </div>
     </div>
   </div>
 </body>

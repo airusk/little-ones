@@ -10,12 +10,24 @@ body{
 }
 
 .game{
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
+  position: relative;
+  /* margin-right: auto;
+  margin-left: auto; */
+}
+
+.canvas{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#overlay-canvas{
+  z-index: 1000;
 }
 
 .gameUI{
+  display: flex;
+  flex-direction: row;
   margin-left: auto;
   margin-right: auto;
   width: 900px;
@@ -26,7 +38,7 @@ body{
   cursor: default;
 }
 
-.gameUI :hover{
+.chain:hover{
   background-color: darkgray;
   cursor: pointer;
 }
@@ -37,6 +49,13 @@ body{
   margin-right: 15px;
 }
 
+.chain-actions{
+  
+}
+
+.chain-action:hover{
+  background-color: darkgray;
+}
 .chain-action{
   font-size: 24px;
 }
