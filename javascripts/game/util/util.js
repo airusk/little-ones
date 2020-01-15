@@ -34,7 +34,7 @@ export const divineNote = (position, maxLength, maxHeight, numSlices) => {
 };
 
 export const playAudio = (filename) => {
-  const audio = new Audio(`./assets/${filename}`);
+  const audio = new Audio(`./assets/sounds/${filename}`);
   audio.play();
 } 
 

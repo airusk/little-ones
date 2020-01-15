@@ -2,7 +2,7 @@ import * as Animation from "./anims/receptor_animations";
 import * as Cursor from "./event_listeners/cursor";
 import * as Util from "./util/util";
 import Bark from "./receptor/bark";
-import Strum from "./receptor/strum";
+import Meow from "./receptor/meow";
 import Receptor from "./receptor/receptor";
 
 class Game {
@@ -100,7 +100,7 @@ class Game {
       event.preventDefault();
       const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
       if (note) {
-        const receptor = new Strum(this.cursorPos, note);
+        const receptor = new Meow(this.cursorPos, note);
         this.receptors.push(receptor);
       }
     });
@@ -120,11 +120,11 @@ class Game {
     let index = 0;
     const playAudio = (index) => { 
       if (index > audioArray.length-1) return;
-      const currentAudio = new Audio(`./assets/${audioArray[index].soundFile}`);
-      audioArray[index].fill = "green";
+      const currentAudio = new Audio(`./assets/sounds/${audioArray[index].soundFile}`);
+      // audioArray[index].fill = "green";
       currentAudio.play();
       setTimeout(() => { 
-        audioArray[index].fill = "black";
+        // audioArray[index].fill = "black";
         index++;
         playAudio(index);
       }, 500);

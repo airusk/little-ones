@@ -32,7 +32,9 @@ body{
 }
 
 .chain{
+  padding: 5px;
   font-size: 18px;
+  margin-right: 15px;
 }
 
 .chain-action{
