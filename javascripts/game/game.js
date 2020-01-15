@@ -18,15 +18,17 @@ class Game {
     this.setInitialState = this.setInitialState.bind(this);
     this.sortReceptors = this.sortReceptors.bind(this);
     
-    // startTime instantiation for all moving objects
+    // startTime instantiation for all objects
+    this.panelWidth = this.canvas.width;
+    this.panelHeight = this.canvas.height;
     this.startTime = new Date();
     this.totalTime = 1; // time in seconds
     this.rate = 100; // px to move per totalTime 
     this.cursorPos;
-    this.receptors = [];
+    this.receptors = [[],[],[],[],[],[],[],[]];
+    this.chainValue = 0;
+    this.solo = false;
     this.outlinePositions = [];
-    this.panelWidth = this.canvas.width;
-    this.panelHeight = this.canvas.height;
     this.setInitialState();
   }
   setInitialState(){
@@ -42,13 +44,13 @@ class Game {
   draw() {
     if (this.receptors){
       // this.sortReceptors();
-      for (let i = 0; i < this.receptors.length - 1; i++) {
+      for (let i = 0; i < this.receptors[this.chainValue].length - 1; i++) {
         Animation.drawConnection(
-          this.receptors[i].position,
-          this.receptors[i + 1].position
+          this.receptors[this.chainValue][i].position,
+          this.receptors[this.chainValue][i + 1].position
         );
       }
-      for(let receptor of this.receptors){
+      for (let receptor of this.receptors[this.chainValue]){
         receptor.drawSelf(...receptor.position);
       }
       for(let outlinePos of this.outlinePositions){
@@ -59,7 +61,7 @@ class Game {
   }
 
   sortReceptors(){
-    this.receptors.sort(function (a, b) {
+    this.receptors[this.chainValue].sort(function (a, b) {
       if (a.position[0] == b.position[0]) return a.position[1] - b.position[1];
       return a.position[0] - b.position[0];
     });
@@ -101,7 +103,7 @@ class Game {
       const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
       if (note) {
         const receptor = new Bark(this.cursorPos, note);
-        this.receptors.push(receptor);
+        this.receptors[this.chainValue].push(receptor);
       }
     });
     this.overlayCanvas.addEventListener('contextmenu', (event) => {
@@ -109,19 +111,23 @@ class Game {
       const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
       if (note) {
         const receptor = new Meow(this.cursorPos, note);
-        this.receptors.push(receptor);
+        this.receptors[this.chainValue].push(receptor);
       }
     });
 
-    // temporary keyup listener
-    window.addEventListener('keyup', (event) => {
-      if(event.keyCode === 32){
-        this.playAll(this.receptors);
-      }
-    });
     const playButton = document.getElementById("play-button");
     playButton.addEventListener('click', (event) => {
-      this.playAll(this.receptors);
+      if(this.solo === true){
+        this.playAll(this.receptors[this.chainValue]);
+      }else{
+        for(let arr of this.receptors){
+          this.playAll(arr);
+        }
+      }
+    });
+    const soloBox = document.getElementById("solo-box");
+    soloBox.addEventListener('change', event => {
+      this.solo = event.target.checked ? true : false;
     });
   }
 
