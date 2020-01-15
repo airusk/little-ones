@@ -4,21 +4,23 @@ body{
 .gamePage{
   display: flex;
   flex-direction: column;
+  /* margin-right: auto;
+  margin-left: auto; */
   margin-top: 50px;
   width: 100%;
   height: 100%;
 }
 
 .game{
-  position: relative;
-  /* margin-right: auto;
-  margin-left: auto; */
+  
 }
 
 .canvas{
   position: absolute;
-  top: 0;
   left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 #overlay-canvas{
@@ -31,6 +33,7 @@ body{
   margin-left: auto;
   margin-right: auto;
   width: 900px;
+  padding-top: 610px;
 }
 
 .gameUI :disabled:hover{
@@ -46,11 +49,11 @@ body{
 .chain{
   padding: 5px;
   font-size: 18px;
-  margin-right: 15px;
+  margin-right: 5px;
 }
 
 .chain-actions{
-  
+  margin-left: 50px;
 }
 
 .chain-action:hover{
