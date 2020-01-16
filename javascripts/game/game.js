@@ -1,6 +1,7 @@
 import * as Animation from "./anims/receptor_animations";
 import * as Cursor from "./event_listeners/cursor";
 import * as Util from "./util/util";
+import * as UI from "./event_listeners/game_ui";
 import Bark from "./receptor/bark";
 import Meow from "./receptor/meow";
 import Receptor from "./receptor/receptor";
@@ -14,43 +15,57 @@ class Game {
     this.overlayCtx = this.overlayCanvas.getContext("2d");
 
     this.draw = this.draw.bind(this);
+    this.updateGameAttributes = this.updateGameAttributes.bind(this);
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState.bind(this);
     this.sortReceptors = this.sortReceptors.bind(this);
+  
+    // this.startTime = new Date();
+    // this.totalTime = 0; // time in seconds
+    // this.rate = 100; // px to move per totalTime 
     
     // startTime instantiation for all objects
     this.panelWidth = this.canvas.width;
     this.panelHeight = this.canvas.height;
-    this.startTime = new Date();
-    this.totalTime = 1; // time in seconds
-    this.rate = 100; // px to move per totalTime 
     this.cursorPos;
     this.receptors = [[],[],[],[],[],[],[],[]];
-    this.chainValue = 0;
+    this.trackValue = 0;
     this.solo = false;
+    this.mute = true;
     this.outlinePositions = [];
     this.setInitialState();
   }
   setInitialState(){
-    this.drawBoard(this.panelWidth, this.panelHeight);
     this.setupEventListeners();
-    console.log("initial state setup!");
   }
 
   update() {
     this.draw();
+    this.updateGameAttributes();
   }
 
   draw() {
+    this.drawBoard(this.panelWidth, this.panelHeight);
     if (this.receptors){
-      // this.sortReceptors();
-      for (let i = 0; i < this.receptors[this.chainValue].length - 1; i++) {
-        Animation.drawConnection(
-          this.receptors[this.chainValue][i].position,
-          this.receptors[this.chainValue][i + 1].position
+      for (let i = 0; i < this.receptors.length; i++) {
+        for (let j = 0; j < this.receptors[i].length - 1; j++) {
+          const arr = this.receptors[i];
+          Animation.drawConnection(
+            arr[j].position,
+            arr[j + 1].position
+          );
+        }
+        for (let receptor of this.receptors[i]) {
+          receptor.drawSelf(...receptor.position);
+        }
+      }
+      for (let i = 0; i < this.receptors[this.trackValue].length - 1; i++) {
+        Animation.drawActiveConnection(
+          this.receptors[this.trackValue][i].position,
+          this.receptors[this.trackValue][i + 1].position
         );
       }
-      for (let receptor of this.receptors[this.chainValue]){
+      for (let receptor of this.receptors[this.trackValue]){
         receptor.drawSelf(...receptor.position);
       }
       for(let outlinePos of this.outlinePositions){
@@ -60,8 +75,15 @@ class Game {
     this.startTime = new Date();
   }
 
+  updateGameAttributes(){
+    for (let i = 0; i < 8; i++) {
+      document.getElementById(`track-${i}`).disabled = false;
+    }
+    document.getElementById(`track-${this.trackValue}`).disabled = true;
+  }
+
   sortReceptors(){
-    this.receptors[this.chainValue].sort(function (a, b) {
+    this.receptors[this.trackValue].sort(function (a, b) {
       if (a.position[0] == b.position[0]) return a.position[1] - b.position[1];
       return a.position[0] - b.position[0];
     });
@@ -69,8 +91,6 @@ class Game {
 
   drawBoard(panelWidth, panelHeight){
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.fillStyle = "gray";
-    this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
     const noteSlice = panelWidth/8;
     this.ctx.fillStyle = "#3373b3";
     this.ctx.fillRect(0, 0, noteSlice, panelHeight);
@@ -88,7 +108,6 @@ class Game {
     this.ctx.fillRect(noteSlice * 6, 0, noteSlice, panelHeight);
     this.ctx.fillStyle = "#3373b3";
     this.ctx.fillRect(noteSlice * 7, 0, noteSlice, panelHeight);
-
   }
 
   setupEventListeners(){
@@ -103,7 +122,8 @@ class Game {
       const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
       if (note) {
         const receptor = new Bark(this.cursorPos, note);
-        this.receptors[this.chainValue].push(receptor);
+        Util.playAudio(receptor.soundFile,this.mute);
+        this.receptors[this.trackValue].push(receptor);
       }
     });
     this.overlayCanvas.addEventListener('contextmenu', (event) => {
@@ -111,24 +131,12 @@ class Game {
       const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
       if (note) {
         const receptor = new Meow(this.cursorPos, note);
-        this.receptors[this.chainValue].push(receptor);
+        Util.playAudio(receptor.soundFile, this.mute);
+        this.receptors[this.trackValue].push(receptor);
       }
     });
-
-    const playButton = document.getElementById("play-button");
-    playButton.addEventListener('click', (event) => {
-      if(this.solo === true){
-        this.playAll(this.receptors[this.chainValue]);
-      }else{
-        for(let arr of this.receptors){
-          this.playAll(arr);
-        }
-      }
-    });
-    const soloBox = document.getElementById("solo-box");
-    soloBox.addEventListener('change', event => {
-      this.solo = event.target.checked ? true : false;
-    });
+    UI.setupGameUI(this);
+    UI.trackSwitches(this);
   }
 
   playAll(audioArray){
@@ -136,9 +144,11 @@ class Game {
     const playAudio = (index) => { 
       if (index > audioArray.length-1) return;
       const receptor = audioArray[index];
-      const currentAudio = new Audio(`./assets/sounds/${receptor.soundFile}`);
       this.outlinePositions.push(receptor.position);
-      currentAudio.play();
+      if(!this.mute){
+        const currentAudio = new Audio(`./assets/sounds/${receptor.soundFile}`);
+        currentAudio.play();
+      }
       setTimeout(() => {
         this.outlinePositions.shift();
         this.overlayCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);

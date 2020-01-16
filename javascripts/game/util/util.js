@@ -33,9 +33,11 @@ export const divineNote = (position, maxLength, maxHeight, numSlices) => {
   return note;
 };
 
-export const playAudio = (filename) => {
-  const audio = new Audio(`./assets/sounds/${filename}`);
-  audio.play();
+export const playAudio = (filename, mute) => {
+  if (!mute){
+    const audio = new Audio(`./assets/sounds/${filename}`);
+    audio.play();
+  }
 } 
 
 const randomPos = (maxHeight, maxWidth) => (

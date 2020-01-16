@@ -41,25 +41,25 @@ body{
   cursor: default;
 }
 
-.chain:hover{
+.track:hover{
   background-color: darkgray;
   cursor: pointer;
 }
 
-.chain{
+.track{
   padding: 5px;
   font-size: 18px;
   margin-right: 5px;
 }
 
-.chain-actions{
-  margin-left: 50px;
+.track-actions{
+  margin-left: 40px;
 }
 
-.chain-action:hover{
+.track-action:hover{
   background-color: darkgray;
 }
-.chain-action{
+.track-action{
   font-size: 24px;
 }
 
