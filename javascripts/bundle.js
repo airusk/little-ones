@@ -86,38 +86,18 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./javascripts/game/anims/ball.js":
-/*!****************************************!*\
-  !*** ./javascripts/game/anims/ball.js ***!
-  \****************************************/
-/*! exports provided: drawBall */
+/***/ "./javascripts/game/anims/receptor_animations.js":
+/*!*******************************************************!*\
+  !*** ./javascripts/game/anims/receptor_animations.js ***!
+  \*******************************************************/
+/*! exports provided: drawConnection, drawActiveConnection, drawOutline */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "drawBall", function() { return drawBall; });
-var drawBall = function drawBall(x, y) {
-  game.ctx.beginPath();
-  game.ctx.arc(x, y, 10, 0, Math.PI * 2);
-  game.ctx.fillStyle = "#0095DD";
-  game.ctx.fill();
-  game.ctx.closePath();
-};
-
-/***/ }),
-
-/***/ "./javascripts/game/behaviors.js":
-/*!***************************************!*\
-  !*** ./javascripts/game/behaviors.js ***!
-  \***************************************/
-/*! exports provided: attraction, repulsion */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attraction", function() { return attraction; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "repulsion", function() { return repulsion; });
-/* harmony import */ var _util_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/util */ "./javascripts/game/util/util.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "drawConnection", function() { return drawConnection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "drawActiveConnection", function() { return drawActiveConnection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "drawOutline", function() { return drawOutline; });
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -126,91 +106,41 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
+var drawConnection = function drawConnection(pos1, pos2) {
+  var _game$ctx, _game$ctx2;
 
-var attraction = function attraction(receptorPos, instigatorPos, distanceDelta) {
-  var threshold = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 150;
-  // position of receptor in relation to instigator
-  var y = receptorPos[0];
-  var x = receptorPos[1];
-  var yRel = spaceshipOperator(y, instigatorPos[0]);
-  var xRel = spaceshipOperator(x, instigatorPos[1]);
+  game.ctx.beginPath();
 
-  if (_util_util__WEBPACK_IMPORTED_MODULE_0__["inThreshold"].apply(_util_util__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(receptorPos).concat(_toConsumableArray(instigatorPos), [threshold]))) {
-    switch (yRel) {
-      case -1:
-        y += distanceDelta;
-        break;
+  (_game$ctx = game.ctx).moveTo.apply(_game$ctx, _toConsumableArray(pos1));
 
-      case 1:
-        y -= distanceDelta;
-        break;
+  (_game$ctx2 = game.ctx).lineTo.apply(_game$ctx2, _toConsumableArray(pos2));
 
-      default:
-        y = receptorPos[0];
-    }
-
-    switch (xRel) {
-      case -1:
-        x += distanceDelta;
-        break;
-
-      case 1:
-        x -= distanceDelta;
-        break;
-
-      default:
-        x = receptorPos[0];
-    }
-  }
-
-  return [y, x];
+  game.ctx.lineWidth = 5;
+  game.ctx.strokeStyle = "gray";
+  game.ctx.stroke();
+  game.ctx.closePath();
 };
-var repulsion = function repulsion(receptorPos, instigatorPos, distanceDelta) {
-  var threshold = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-  var y = receptorPos[0];
-  var x = receptorPos[1];
-  var yRel = spaceshipOperator(y, instigatorPos[0]);
-  var xRel = spaceshipOperator(x, instigatorPos[1]);
+var drawActiveConnection = function drawActiveConnection(pos1, pos2) {
+  var _game$ctx3, _game$ctx4;
 
-  if (_util_util__WEBPACK_IMPORTED_MODULE_0__["inThreshold"].apply(_util_util__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(receptorPos).concat(_toConsumableArray(instigatorPos), [threshold]))) {
-    switch (yRel) {
-      case -1:
-        y -= distanceDelta;
-        break;
+  game.ctx.beginPath();
 
-      case 1:
-        y += distanceDelta;
-        break;
+  (_game$ctx3 = game.ctx).moveTo.apply(_game$ctx3, _toConsumableArray(pos1));
 
-      default:
-        y = receptorPos[0];
-    }
+  (_game$ctx4 = game.ctx).lineTo.apply(_game$ctx4, _toConsumableArray(pos2));
 
-    switch (xRel) {
-      case -1:
-        x -= distanceDelta;
-        break;
-
-      case 1:
-        x += distanceDelta;
-        break;
-
-      default:
-        x = receptorPos[0];
-    }
-  }
-
-  return [y, x];
-}; // helper functions
-
-var spaceshipOperator = function spaceshipOperator(rec, ins) {
-  if (rec < ins) {
-    return -1;
-  } else if (rec > ins) {
-    return 1;
-  } else {
-    return 0;
-  }
+  game.ctx.lineWidth = 5;
+  game.ctx.strokeStyle = "black";
+  game.ctx.stroke();
+  game.ctx.closePath();
+};
+var drawOutline = function drawOutline(x, y) {
+  game.overlayCtx.beginPath();
+  game.overlayCtx.strokeStyle = "#5f68fb";
+  game.overlayCtx.lineWidth = 5;
+  game.overlayCtx.arc(x, y, 20, 0, Math.PI * 2);
+  game.overlayCtx.stroke();
+  game.overlayCtx.closePath();
 };
 
 /***/ }),
@@ -235,6 +165,90 @@ var getCursorPos = function getCursorPos(canvas, event) {
 
 /***/ }),
 
+/***/ "./javascripts/game/event_listeners/game_ui.js":
+/*!*****************************************************!*\
+  !*** ./javascripts/game/event_listeners/game_ui.js ***!
+  \*****************************************************/
+/*! exports provided: setupGameUI, trackSwitches */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupGameUI", function() { return setupGameUI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "trackSwitches", function() { return trackSwitches; });
+var setupGameUI = function setupGameUI(game) {
+  var playButton = document.getElementById("play-button");
+  playButton.addEventListener('click', function (event) {
+    if (game.solo === true) {
+      game.playAll(game.receptors[game.trackValue]);
+    } else {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = game.receptors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var arr = _step.value;
+          game.playAll(arr);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+  });
+  var undoButton = document.getElementById("undo-button");
+  undoButton.addEventListener('click', function (event) {
+    game.receptors[game.trackValue].pop();
+  });
+  var clearButton = document.getElementById("clear-button");
+  clearButton.addEventListener('click', function (event) {
+    game.receptors[game.trackValue] = [];
+  });
+  var clearAllButton = document.getElementById("clear-all-button");
+  clearAllButton.addEventListener('click', function (event) {
+    game.receptors = [[], [], [], [], [], [], [], []];
+  });
+  var soloBox = document.getElementById("solo-box");
+  soloBox.addEventListener('change', function (event) {
+    game.solo = event.target.checked ? true : false;
+  });
+  var muteBox = document.getElementById("mute-box");
+  muteBox.addEventListener('change', function (event) {
+    game.mute = event.target.checked ? true : false;
+  });
+};
+var trackSwitches = function trackSwitches(game) {
+  var _loop = function _loop(i) {
+    var track = document.getElementById("track-".concat(i));
+    track.addEventListener('click', function (event) {
+      game.trackValue = i;
+
+      for (var j = 0; j < 8; j++) {
+        document.getElementById("track-".concat(j)).disabled = false;
+      }
+
+      document.getElementById("track-".concat(game.trackValue)).disabled = true;
+    });
+  };
+
+  for (var i = 0; i < 8; i++) {
+    _loop(i);
+  }
+};
+
+/***/ }),
+
 /***/ "./javascripts/game/game.js":
 /*!**********************************!*\
   !*** ./javascripts/game/game.js ***!
@@ -244,10 +258,13 @@ var getCursorPos = function getCursorPos(canvas, event) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _anims_ball__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./anims/ball */ "./javascripts/game/anims/ball.js");
+/* harmony import */ var _anims_receptor_animations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./anims/receptor_animations */ "./javascripts/game/anims/receptor_animations.js");
 /* harmony import */ var _event_listeners_cursor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./event_listeners/cursor */ "./javascripts/game/event_listeners/cursor.js");
-/* harmony import */ var _behaviors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./behaviors */ "./javascripts/game/behaviors.js");
-/* harmony import */ var _util_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util/util */ "./javascripts/game/util/util.js");
+/* harmony import */ var _util_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util/util */ "./javascripts/game/util/util.js");
+/* harmony import */ var _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./event_listeners/game_ui */ "./javascripts/game/event_listeners/game_ui.js");
+/* harmony import */ var _receptor_bark__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./receptor/bark */ "./javascripts/game/receptor/bark.js");
+/* harmony import */ var _receptor_meow__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./receptor/meow */ "./javascripts/game/receptor/meow.js");
+/* harmony import */ var _receptor_receptor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./receptor/receptor */ "./javascripts/game/receptor/receptor.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -267,83 +284,42 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
+
+
 var Game =
 /*#__PURE__*/
 function () {
   function Game(canvas, ctx) {
-    var _this = this;
-
     _classCallCheck(this, Game);
 
     this.canvas = canvas;
     this.ctx = ctx;
-    this.threshold = 150; // Array of receptor objects
-
-    this.receptors = _util_util__WEBPACK_IMPORTED_MODULE_3__["receptorGenerator"](10, canvas.height - this.threshold, canvas.width - this.threshold);
-    this.initialState = this.initialState.bind(this);
+    this.overlayCanvas = document.getElementById("overlay-canvas");
+    this.overlayCtx = this.overlayCanvas.getContext("2d");
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
-    this.setInitialState = this.setInitialState();
-    this.handleBehavior = this.handleBehavior.bind(this);
-    this.handleMovement = this.handleMovement.bind(this); // startTime instantiation for all moving objects
+    this.setInitialState = this.setInitialState.bind(this);
+    this.sortReceptors = this.sortReceptors.bind(this); // this.startTime = new Date();
+    // this.totalTime = 0; // time in seconds
+    // this.rate = 100; // px to move per totalTime 
+    // startTime instantiation for all objects
 
-    this.startTime = new Date();
-    this.totalTime = 1; // time in seconds
-
-    this.rate = 300; // px to move per totalTime 
-    // Cursor event listeners
-
-    canvas.addEventListener('mousemove', function (event) {
-      var cursorPos = _event_listeners_cursor__WEBPACK_IMPORTED_MODULE_1__["getCursorPos"](canvas, event);
-      var coords = [cursorPos.x, cursorPos.y];
-      _this.instigatorPos = coords;
-    }); //toggle behaviors
-
-    canvas.addEventListener('click', function (event) {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = _this.receptors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var receptor = _step.value;
-
-          if (receptor.behavior === _behaviors__WEBPACK_IMPORTED_MODULE_2__["repulsion"]) {
-            receptor.behavior = _behaviors__WEBPACK_IMPORTED_MODULE_2__["attraction"];
-          } else receptor.behavior = _behaviors__WEBPACK_IMPORTED_MODULE_2__["repulsion"];
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-    });
+    this.panelWidth = this.canvas.width;
+    this.panelHeight = this.canvas.height;
+    this.cursorPos;
+    this.receptors = [[], [], [], [], [], [], [], []];
+    this.trackValue = 0;
+    this.solo = false;
+    this.mute = true;
+    this.outlinePositions = [];
+    this.setInitialState();
   }
 
   _createClass(Game, [{
-    key: "initialState",
-    value: function initialState() {
-      // Rectangle
-      this.ctx.beginPath();
-      this.ctx.rect(250, 150, 50, 50);
-      this.ctx.fillStyle = "#9A0055";
-      this.ctx.fill();
-      this.ctx.closePath(); // Rectangle
-
-      this.update();
-    }
-  }, {
     key: "setInitialState",
-    value: function setInitialState() {// this.startTime = new Date();
+    value: function setInitialState() {
+      this.setupEventListeners();
     }
   }, {
     key: "update",
@@ -353,96 +329,191 @@ function () {
   }, {
     key: "draw",
     value: function draw() {
-      // clear before redraw
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.fillStyle = "black";
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-      if (this.instigatorPos) _anims_ball__WEBPACK_IMPORTED_MODULE_0__["drawBall"].apply(_anims_ball__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(this.instigatorPos)); // debugger
+      this.drawBoard(this.panelWidth, this.panelHeight);
 
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this.receptors[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var receptor = _step2.value;
-          _anims_ball__WEBPACK_IMPORTED_MODULE_0__["drawBall"].apply(_anims_ball__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(receptor.position));
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-            _iterator2["return"]();
+      if (this.receptors) {
+        for (var i = 0; i < this.receptors.length; i++) {
+          for (var j = 0; j < this.receptors[i].length - 1; j++) {
+            var arr = this.receptors[i];
+            _anims_receptor_animations__WEBPACK_IMPORTED_MODULE_0__["drawConnection"](arr[j].position, arr[j + 1].position);
           }
+
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = this.receptors[i][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var receptor = _step.value;
+              receptor.drawSelf.apply(receptor, _toConsumableArray(receptor.position));
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                _iterator["return"]();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+        }
+
+        for (var _i = 0; _i < this.receptors[this.trackValue].length - 1; _i++) {
+          _anims_receptor_animations__WEBPACK_IMPORTED_MODULE_0__["drawActiveConnection"](this.receptors[this.trackValue][_i].position, this.receptors[this.trackValue][_i + 1].position);
+        }
+
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = this.receptors[this.trackValue][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var _receptor = _step2.value;
+
+            _receptor.drawSelf.apply(_receptor, _toConsumableArray(_receptor.position));
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
         } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+              _iterator2["return"]();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
+        }
+
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = this.outlinePositions[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var outlinePos = _step3.value;
+            _anims_receptor_animations__WEBPACK_IMPORTED_MODULE_0__["drawOutline"].apply(_anims_receptor_animations__WEBPACK_IMPORTED_MODULE_0__, _toConsumableArray(outlinePos));
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+              _iterator3["return"]();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
           }
         }
       }
 
-      this.handleBehavior();
       this.startTime = new Date();
-    } // handles all movement
-
+    }
   }, {
-    key: "handleMovement",
-    value: function handleMovement() {
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = this.receptors[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var receptor = _step3.value;
-        } // if this.instigatorPos
-        // this.handleBehavior();
-
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-            _iterator3["return"]();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-    } // Takes in a behavior to apply to receptors
-
+    key: "sortReceptors",
+    value: function sortReceptors() {
+      this.receptors[this.trackValue].sort(function (a, b) {
+        if (a.position[0] == b.position[0]) return a.position[1] - b.position[1];
+        return a.position[0] - b.position[0];
+      });
+    }
   }, {
-    key: "handleBehavior",
-    value: function handleBehavior() {
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
+    key: "drawBoard",
+    value: function drawBoard(panelWidth, panelHeight) {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      var noteSlice = panelWidth / 8;
+      this.ctx.fillStyle = "#3373b3";
+      this.ctx.fillRect(0, 0, noteSlice, panelHeight);
+      this.ctx.fillStyle = "#5fb2ef";
+      this.ctx.fillRect(noteSlice * 1, 0, noteSlice, panelHeight);
+      this.ctx.fillStyle = "#cc7aa8";
+      this.ctx.fillRect(noteSlice * 2, 0, noteSlice, panelHeight);
+      this.ctx.fillStyle = "#32a073";
+      this.ctx.fillRect(noteSlice * 3, 0, noteSlice, panelHeight);
+      this.ctx.fillStyle = "#d36027";
+      this.ctx.fillRect(noteSlice * 4, 0, noteSlice, panelHeight);
+      this.ctx.fillStyle = "#e79f27";
+      this.ctx.fillRect(noteSlice * 5, 0, noteSlice, panelHeight);
+      this.ctx.fillStyle = "#f2e647";
+      this.ctx.fillRect(noteSlice * 6, 0, noteSlice, panelHeight);
+      this.ctx.fillStyle = "#3373b3";
+      this.ctx.fillRect(noteSlice * 7, 0, noteSlice, panelHeight);
+    }
+  }, {
+    key: "setupEventListeners",
+    value: function setupEventListeners() {
+      var _this = this;
 
-      try {
-        for (var _iterator4 = this.receptors[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var receptor = _step4.value;
-          receptor.position = receptor.behavior(receptor.position, this.instigatorPos, _util_util__WEBPACK_IMPORTED_MODULE_3__["distanceDelta"](this.startTime, this.totalTime, this.rate) // this.threshold
-          );
+      // Cursor event listeners
+      // overlay canvas event listeners
+      this.overlayCanvas.addEventListener('mousemove', function (event) {
+        var cursorPos = _event_listeners_cursor__WEBPACK_IMPORTED_MODULE_1__["getCursorPos"](_this.overlayCanvas, event);
+        var coords = [cursorPos.x, cursorPos.y];
+        _this.cursorPos = coords;
+      });
+      this.overlayCanvas.addEventListener('click', function (event) {
+        var note = _util_util__WEBPACK_IMPORTED_MODULE_2__["divineNote"](_this.cursorPos, _this.panelWidth, _this.panelHeight, 8);
+
+        if (note) {
+          var receptor = new _receptor_bark__WEBPACK_IMPORTED_MODULE_4__["default"](_this.cursorPos, note);
+          _util_util__WEBPACK_IMPORTED_MODULE_2__["playAudio"](receptor.soundFile, _this.mute);
+
+          _this.receptors[_this.trackValue].push(receptor);
         }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-            _iterator4["return"]();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
+      });
+      this.overlayCanvas.addEventListener('contextmenu', function (event) {
+        event.preventDefault();
+        var note = _util_util__WEBPACK_IMPORTED_MODULE_2__["divineNote"](_this.cursorPos, _this.panelWidth, _this.panelHeight, 8);
+
+        if (note) {
+          var receptor = new _receptor_meow__WEBPACK_IMPORTED_MODULE_5__["default"](_this.cursorPos, note);
+          _util_util__WEBPACK_IMPORTED_MODULE_2__["playAudio"](receptor.soundFile, _this.mute);
+
+          _this.receptors[_this.trackValue].push(receptor);
         }
-      }
+      });
+      _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__["setupGameUI"](this);
+      _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__["trackSwitches"](this);
+    }
+  }, {
+    key: "playAll",
+    value: function playAll(audioArray) {
+      var _this2 = this;
+
+      var index = 0;
+
+      var playAudio = function playAudio(index) {
+        if (index > audioArray.length - 1) return;
+        var receptor = audioArray[index];
+
+        _this2.outlinePositions.push(receptor.position);
+
+        if (!_this2.mute) {
+          var currentAudio = new Audio("./assets/sounds/".concat(receptor.soundFile));
+          currentAudio.play();
+        }
+
+        setTimeout(function () {
+          _this2.outlinePositions.shift();
+
+          _this2.overlayCtx.clearRect(0, 0, _this2.canvas.width, _this2.canvas.height);
+
+          ++index;
+          playAudio(index);
+        }, 500);
+      };
+
+      playAudio(index);
     }
   }]);
 
@@ -494,6 +565,104 @@ var loop = function loop(game) {
 
 /***/ }),
 
+/***/ "./javascripts/game/receptor/bark.js":
+/*!*******************************************!*\
+  !*** ./javascripts/game/receptor/bark.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _receptor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./receptor */ "./javascripts/game/receptor/receptor.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var Bark =
+/*#__PURE__*/
+function (_Receptor) {
+  _inherits(Bark, _Receptor);
+
+  function Bark(position, note) {
+    var _this;
+
+    _classCallCheck(this, Bark);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Bark).call(this, position, note));
+    _this.soundFile = "dog_bark_".concat(note, ".ogg");
+    _this.imgFile = "dog.svg";
+    return _this;
+  }
+
+  return Bark;
+}(_receptor__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (Bark);
+
+/***/ }),
+
+/***/ "./javascripts/game/receptor/meow.js":
+/*!*******************************************!*\
+  !*** ./javascripts/game/receptor/meow.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _receptor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./receptor */ "./javascripts/game/receptor/receptor.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var Meow =
+/*#__PURE__*/
+function (_Receptor) {
+  _inherits(Meow, _Receptor);
+
+  function Meow(position, note) {
+    var _this;
+
+    _classCallCheck(this, Meow);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Meow).call(this, position, note));
+    _this.soundFile = "cat_meow_".concat(note, ".ogg");
+    _this.imgFile = "cat.svg";
+    return _this;
+  }
+
+  return Meow;
+}(_receptor__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (Meow);
+
+/***/ }),
+
 /***/ "./javascripts/game/receptor/receptor.js":
 /*!***********************************************!*\
   !*** ./javascripts/game/receptor/receptor.js ***!
@@ -512,24 +681,28 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Receptor =
 /*#__PURE__*/
 function () {
-  function Receptor(position, behavior) {
+  function Receptor(position, note) {
     _classCallCheck(this, Receptor);
 
     this.position = position;
-    this.behavior = behavior;
-    this.movementPattern = this.movementPattern.bind(this);
-  } // default movement
-
+    this.note = note;
+    this.drawSelf = this.drawSelf.bind(this);
+  }
 
   _createClass(Receptor, [{
-    key: "movementPattern",
-    value: function movementPattern() {}
+    key: "drawSelf",
+    value: function drawSelf(x, y) {
+      var img = new Image(38, 38);
+      img.src = "./assets/img/".concat(this.imgFile);
+      game.ctx.drawImage(img, x - 19, y - 19, img.width, img.height);
+    }
   }]);
 
   return Receptor;
 }();
 
-/* harmony default export */ __webpack_exports__["default"] = (Receptor);
+/* harmony default export */ __webpack_exports__["default"] = (Receptor); // COLOR SCHEMA
+// HEX	RGB	CMYK		HEX: #cf5034	R: 207	G: 80	B: 52	C: 0	M: 61	Y: 75	K: 19		HEX: #35d6ab	R: 53	G: 214	B: 171	C: 75	M: 0	Y: 20	K: 16		HEX: #6d34cf	R: 109	G: 52	B: 207	C: 47	M: 75	Y: 0	K: 19		HEX: #cf9b34	R: 207	G: 155	B: 52	C: 0	M: 25	Y: 75	K: 19
 
 /***/ }),
 
@@ -537,17 +710,16 @@ function () {
 /*!***************************************!*\
   !*** ./javascripts/game/util/util.js ***!
   \***************************************/
-/*! exports provided: distanceDelta, receptorGenerator, inThreshold */
+/*! exports provided: distanceDelta, receptorGenerator, divineNote, playAudio */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "distanceDelta", function() { return distanceDelta; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receptorGenerator", function() { return receptorGenerator; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "inThreshold", function() { return inThreshold; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "divineNote", function() { return divineNote; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "playAudio", function() { return playAudio; });
 /* harmony import */ var _receptor_receptor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../receptor/receptor */ "./javascripts/game/receptor/receptor.js");
-/* harmony import */ var _behaviors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../behaviors */ "./javascripts/game/behaviors.js");
-
 
 var distanceDelta = function distanceDelta(startTime, totalTime, rate) {
   var timeElapsed = (new Date() - startTime) / 1000; // time elapsed in seconds
@@ -557,18 +729,37 @@ var distanceDelta = function distanceDelta(startTime, totalTime, rate) {
 
   return rate * timeElapsed / totalTime;
 };
-var receptorGenerator = function receptorGenerator(total, maxHeight, maxWidth) {
+var receptorGenerator = function receptorGenerator(total, maxWidth, maxHeight) {
   var receptors = [];
 
   for (var i = 0; i < total; i++) {
-    var receptor = new _receptor_receptor__WEBPACK_IMPORTED_MODULE_0__["default"](randomPos(maxHeight, maxWidth), _behaviors__WEBPACK_IMPORTED_MODULE_1__["repulsion"]);
+    var receptor = new _receptor_receptor__WEBPACK_IMPORTED_MODULE_0__["default"](randomPos(maxWidth, maxHeight), Behavior.repulsion);
     receptors.push(receptor);
   }
 
   return receptors;
 };
-var inThreshold = function inThreshold(y1, x1, y2, x2, threshold) {
-  return Math.abs(y1 - y2) < threshold && Math.abs(x1 - x2) < threshold;
+var divineNote = function divineNote(position, maxLength, maxHeight, numSlices) {
+  var note;
+  if (position[1] > maxHeight || position[0] > maxLength) return note;
+  var notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C2'];
+  var sliceLength = maxLength / numSlices;
+
+  for (var i = 0; i < numSlices + 1; i++) {
+    if (i * sliceLength > position[0]) {
+      note = notes[i - 1];
+      break;
+    }
+  }
+
+  console.log(note);
+  return note;
+};
+var playAudio = function playAudio(filename, mute) {
+  if (!mute) {
+    var audio = new Audio("./assets/sounds/".concat(filename));
+    audio.play();
+  }
 };
 
 var randomPos = function randomPos(maxHeight, maxWidth) {
@@ -591,11 +782,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.addEventListener('DOMContentLoaded', function () {
-  var canvas = document.getElementById("mainCanvas");
+  var canvas = document.getElementById("main-canvas");
   var ctx = canvas.getContext("2d");
   var game = new _game_game__WEBPACK_IMPORTED_MODULE_0__["default"](canvas, ctx);
   window.game = game;
   Object(_game_loop__WEBPACK_IMPORTED_MODULE_1__["loop"])(game);
+  console.log("Credit: icons from 'https://www.flaticon.com/authors/freepik'");
 });
 
 /***/ })
