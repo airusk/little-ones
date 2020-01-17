@@ -9,6 +9,12 @@ export const setupGameUI = (game) => {
       }
     }
   });
+
+  const undoButton = document.getElementById("undo-button");
+  undoButton.addEventListener('click', event => {
+    game.receptors[game.trackValue].pop();
+  });
+
   const clearButton = document.getElementById("clear-button");
   clearButton.addEventListener('click', event => {
     game.receptors[game.trackValue] = [];
@@ -36,6 +42,10 @@ export const trackSwitches = (game) => {
     const track = document.getElementById(`track-${i}`)
     track.addEventListener('click', (event) => {
       game.trackValue = i;
+      for (let j = 0; j < 8; j++) {
+        document.getElementById(`track-${j}`).disabled = false;
+      }
+      document.getElementById(`track-${game.trackValue}`).disabled = true;
     });
   }
 }

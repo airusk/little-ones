@@ -15,7 +15,6 @@ class Game {
     this.overlayCtx = this.overlayCanvas.getContext("2d");
 
     this.draw = this.draw.bind(this);
-    this.updateGameAttributes = this.updateGameAttributes.bind(this);
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState.bind(this);
     this.sortReceptors = this.sortReceptors.bind(this);
@@ -41,7 +40,6 @@ class Game {
 
   update() {
     this.draw();
-    this.updateGameAttributes();
   }
 
   draw() {
@@ -73,13 +71,6 @@ class Game {
       }
     }
     this.startTime = new Date();
-  }
-
-  updateGameAttributes(){
-    for (let i = 0; i < 8; i++) {
-      document.getElementById(`track-${i}`).disabled = false;
-    }
-    document.getElementById(`track-${this.trackValue}`).disabled = true;
   }
 
   sortReceptors(){
