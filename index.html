@@ -46,11 +46,43 @@
             </label>
           </label>
         </div>
-        <button class="track-action" id="clear-button">clear</button>
         <button class="track-action" id="clear-all-button">clear all</button>
+        <button class="track-action" id="clear-button">clear</button>
         <button class="track-action" id="undo-button">↺</button>
         <button class="track-action" id="play-button">▶</button>
       </div>
+      <a class="instructions" id="intructions">?
+        <p class="instructions-copy">
+          <b class="bold-instructions">little ones</b> is a sandbox soundboard system.
+          <br>
+          There is no point to this soundboard, it is an exercise of
+          creating an interactive system using only javascript and as few 
+          libraries as possible.
+          <br>
+          The board starts off muted for your discretion. To unmute the board
+          toggle the switch labeled 'mute'.
+          <br>
+          <br>
+          <b class="bold-instructions">How to use:</b>
+          <br>
+          - clicking on the board results in adding a 
+          <b class="definition-instructions">node</b> which will sound
+          and be added to the current <b class="definition-instructions">track</b> 
+          <br>
+          - the different colors represent notes in ascending order from left
+          to right <br>
+          - clicking on the numbers below the board will switch tracks <br>
+          - the 'solo' toggle allows you to play one or all tracks upon clicking
+          '▶'
+          <br>
+          <br>
+          <b class="bold-instructions">Objects:</b>
+          <br>
+          <b class="definition-instructions">node</b> - responsible for playing a sound associated with its position 
+          and image <br>
+          <b class="definition-instructions">track</b> - holds an ordered list of nodes
+        </p>
+      </a>
     </div>
   </div>
 </body>

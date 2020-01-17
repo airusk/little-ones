@@ -37,6 +37,7 @@ body{
   right: 0;
   margin-right: auto;
   margin-left: auto;
+  cursor: pointer;
 }
 
 #overlay-canvas{
@@ -201,4 +202,50 @@ input:checked + .slider:before {
 .checkboxes{
   padding-top: 9px;
   margin-right: 10px;
+}
+
+.instructions{
+  margin-left: 5px;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  font-size: 28px;
+  color: #ededed;
+  border: solid #ededed 2px;
+  border-radius: 50%;
+}
+.instructions:hover{
+  cursor: pointer;
+  visibility: visible;
+}
+
+.instructions:hover .instructions-copy{
+  visibility: visible;
+}
+
+.instructions-copy{
+  visibility: hidden;
+  position: absolute;
+  bottom: 50px;
+  right: -25px;
+  width: 400px;
+  border: solid #121212 .5px;
+  background-color: #ededed;
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 1001;
+  color: #121212;
+  font-size: 14px;
+  line-height: 15px;
+  text-align: justify;
+}
+
+.bold-instructions{
+  font-size: 15px;
+  font-weight: 1000;
+}
+
+.definition-instructions{
+  font-size: 14.5;
+  font-weight: 1000;
 }
