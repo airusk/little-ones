@@ -3,11 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible"content="ie=edge">
-  <script type="text/javascript"src="./javascripts/bundle.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Karla&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="./stylesheets/reset.css">
+  <link rel="stylesheet" type="text/css" href="./stylesheets/game_ui.css">
+  <script type="text/javascript" src="./javascripts/bundle.js"></script>
   <title>little ones</title>
 </head>
 <body>
-  <canvas id="mainCanvas" width="1200" height="800"></canvas>
+  <div class="game-title">
+    <img class="title-copy"src="./assets/img/little-ones-logo.png" alt="little ones">
+  </div>
+  <div class="gamePage">
+    <div class="game">
+      <canvas class="canvas" id="overlay-canvas" width="900" height="600"></canvas>
+      <canvas class="canvas" id="main-canvas" width="900" height="600"></canvas>
+    </div>
+    <div class="gameUI">
+      <div class="track-switches">
+        <label class="track-heading">tracks: </label>
+        <button class="track" id="track-0" disabled>1</button>
+        <button class="track" id="track-1">2</button>
+        <button class="track" id="track-2">3</button>
+        <button class="track" id="track-3">4</button>
+        <button class="track" id="track-4">5</button>
+        <button class="track" id="track-5">6</button>
+        <button class="track" id="track-6">7</button>
+        <button class="track" id="track-7">8</button>
+      </div>
+      <div class="track-actions">
+        <div class="checkboxes">
+          <label class="solo"> solo: 
+            <label class="switch">
+              <input type="checkbox" id="solo-box">
+              <span class="slider round"></span>
+            </label>
+          </label>
+          <label class="mute"> mute: 
+            <label class="switch">
+              <input type="checkbox" id="mute-box" checked>
+              <span class="slider round"></span>
+            </label>
+          </label>
+        </div>
+        <button class="track-action" id="clear-all-button">clear all</button>
+        <button class="track-action" id="clear-button">clear</button>
+        <button class="track-action" id="undo-button">↺</button>
+        <button class="track-action" id="play-button">▶</button>
+      </div>
+      <a class="instructions" id="intructions">?
+        <p class="instructions-copy">
+          <b class="bold-instructions">little ones</b> is a sandbox soundboard system.
+          <br>
+          There is no point to this soundboard, it is an exercise of
+          creating an interactive system using only javascript and as few 
+          libraries as possible.
+          <br>
+          The board starts off muted for your discretion. To unmute the board
+          toggle the switch labeled 'mute'.
+          <br>
+          <br>
+          <b class="bold-instructions">How to use:</b>
+          <br>
+          - clicking on the board results in adding a 
+          <b class="definition-instructions">node</b> which will sound
+          and be added to the current <b class="definition-instructions">track</b> 
+          <br>
+          - the different colors represent notes in ascending order from left
+          to right <br>
+          - clicking on the numbers below the board will switch tracks <br>
+          - the 'solo' toggle allows you to play one or all tracks upon clicking
+          '▶'
+          <br>
+          <br>
+          <b class="bold-instructions">Objects:</b>
+          <br>
+          <b class="definition-instructions">node</b> - responsible for playing 
+          a sound associated with its position and image <br>
+          <b class="definition-instructions">track</b> - holds an ordered list 
+          of nodes
+        </p>
+      </a>
+    </div>
+  </div>
 </body>
 </html>
