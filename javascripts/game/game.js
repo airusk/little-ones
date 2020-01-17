@@ -13,7 +13,6 @@ class Game {
     
     this.overlayCanvas = document.getElementById("overlay-canvas");
     this.overlayCtx = this.overlayCanvas.getContext("2d");
-
     this.draw = this.draw.bind(this);
     this.update = this.update.bind(this);
     this.setInitialState = this.setInitialState.bind(this);
