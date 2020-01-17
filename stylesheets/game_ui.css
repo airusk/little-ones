@@ -29,6 +29,7 @@ body{
   border-radius: 5%;
   background-color: rgb(60, 60, 60);
   padding: 60px;
+  padding-bottom: 95px;
 }
 
 .canvas{
@@ -227,7 +228,7 @@ input:checked + .slider:before {
   visibility: hidden;
   position: absolute;
   bottom: 50px;
-  right: -25px;
+  right: 10px;
   width: 400px;
   border: solid #121212 .5px;
   background-color: #ededed;
