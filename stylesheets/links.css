@@ -1,0 +1,18 @@
+.icons{
+  display: flex;
+  flex-flow: row-reverse;
+  padding-bottom: 10px;
+}
+
+.icons li{
+  width: 30px;
+  text-align: end;
+}
+
+.icon{
+  color: #ededed;
+}
+
+.icon:hover{
+  color: #2196F3;
+}

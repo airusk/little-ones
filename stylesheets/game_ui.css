@@ -28,8 +28,7 @@ body{
   height: 600px;
   border-radius: 5%;
   background-color: rgb(60, 60, 60);
-  padding: 60px;
-  padding-bottom: 95px;
+  padding: 40px 60px 100px 60px;
 }
 
 .canvas{
