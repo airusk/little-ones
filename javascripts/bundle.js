@@ -311,7 +311,7 @@ function () {
     this.receptors = [[], [], [], [], [], [], [], []];
     this.trackValue = 0;
     this.solo = false;
-    this.mute = true;
+    this.mute = false;
     this.outlinePositions = [];
     this.setInitialState();
   }
