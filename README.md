@@ -1,6 +1,6 @@
 # little ones
 
-## [Live Demo!](http://boneappletea.herokuapp.com/#/)
+## [Live Demo!](https://airusk.github.io/little-ones/)
 
 <img src="https://github.com/airusk/little-ones/blob/master/readme-assets/main.png" align="center">
 
@@ -82,4 +82,4 @@ These receptors are reprensented as circular SVGs and are visually linked togeth
 
 ### Putting it All Together
 
-It's much more amusing with sound. Try it [live!](http://boneappletea.herokuapp.com/#/)
+It's much more amusing with sound. Try it [live!](https://airusk.github.io/little-ones/)
