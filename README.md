@@ -83,3 +83,5 @@ These receptors are reprensented as circular SVGs and are visually linked togeth
 ### Putting it All Together
 
 It's much more amusing with sound. Try it [live!](https://airusk.github.io/little-ones/)
+
+<img src="https://github.com/airusk/little-ones/blob/master/readme-assets/little-ones-demo.gif" align="center">
