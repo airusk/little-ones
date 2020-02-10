@@ -2,12 +2,17 @@
 
 ## [Live Demo!](https://airusk.github.io/little-ones/)
 
+little ones is an web-based audio sandbox using purely JavaScript, HTML, and CSS.
+
 <img src="https://github.com/airusk/little-ones/blob/master/readme-assets/main.png" align="center">
 
 ## Technologies
 
 * JavaScript
 * NPM
+* HTML
+* CSS
+
 
 ## Features
 
@@ -85,3 +90,10 @@ These receptors are reprensented as circular SVGs and are visually linked togeth
 It's much more amusing with sound. Try it [live!](https://airusk.github.io/little-ones/)
 
 <img src="https://github.com/airusk/little-ones/blob/master/readme-assets/little-ones-demo.gif" align="center">
+
+### Future Goals
+
+In the future, I would like to: 
+ * add a sidebar to choose different sounds from
+ * alter the audio file divining function to take into account the vertical position and change octaves
+ * create a way to save and load audio snippets
