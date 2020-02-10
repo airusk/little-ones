@@ -41,7 +41,7 @@ body{
 }
 
 #overlay-canvas{
-  z-index: 1000;
+  z-index: 2;
 }
 
 .gameUI{
@@ -205,13 +205,13 @@ input:checked + .slider:before {
 }
 
 .instructions{
-  margin-left: 5px;
   text-align: center;
-  width: 30px;
-  height: 30px;
+  margin: auto;
+  width: 40px;
+  height: 40px;
   font-size: 28px;
-  color: #ededed;
-  border: solid #ededed 2px;
+  color: #2196F3;
+  border: solid #2196F3 2px;
   border-radius: 50%;
 }
 .instructions:hover{
@@ -220,20 +220,17 @@ input:checked + .slider:before {
 }
 
 .instructions:hover .instructions-copy{
-  visibility: visible;
+  /* visibility: visible; */
 }
 
 .instructions-copy{
-  visibility: hidden;
-  position: absolute;
   bottom: 50px;
   right: 10px;
   width: 400px;
-  border: solid #121212 .5px;
-  background-color: #ededed;
   border-radius: 8px;
   padding: 20px;
-  z-index: 1001;
+  z-index: 3;
+  font-family: 'Karla', sans-serif;
   color: #121212;
   font-size: 14px;
   line-height: 15px;
@@ -241,20 +238,26 @@ input:checked + .slider:before {
 }
 
 .title-instructions{
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 1000px;
 }
 
 .bold-instructions{
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 1000;
 }
 
 .definition-instructions{
-  font-size: 14.5;
+  font-size: 16px;
   font-weight: 1000;
 }
 
 .italics-instructions{
   font-style: italic;
+}
+
+.centered-text{
+  margin: auto;
+  width: fit-content;
+  text-align: center;
 }

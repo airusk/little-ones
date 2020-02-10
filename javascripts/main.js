@@ -1,4 +1,5 @@
 import Game from "./game/game";
+import { setupModal } from "./modal";
 import { loop } from "./game/loop";
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -7,6 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const game = new Game(canvas, ctx);
   window.game = game;
   loop(game);
+  setupModal();
   console.log("Credit: icons from 'https://www.flaticon.com/authors/freepik'")
 });
 

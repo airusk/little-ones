@@ -778,7 +778,9 @@ var randomPos = function randomPos(maxHeight, maxWidth) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game_game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game/game */ "./javascripts/game/game.js");
-/* harmony import */ var _game_loop__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game/loop */ "./javascripts/game/loop.js");
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal */ "./javascripts/modal.js");
+/* harmony import */ var _game_loop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./game/loop */ "./javascripts/game/loop.js");
+
 
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -786,9 +788,42 @@ window.addEventListener('DOMContentLoaded', function () {
   var ctx = canvas.getContext("2d");
   var game = new _game_game__WEBPACK_IMPORTED_MODULE_0__["default"](canvas, ctx);
   window.game = game;
-  Object(_game_loop__WEBPACK_IMPORTED_MODULE_1__["loop"])(game);
+  Object(_game_loop__WEBPACK_IMPORTED_MODULE_2__["loop"])(game);
+  Object(_modal__WEBPACK_IMPORTED_MODULE_1__["setupModal"])();
   console.log("Credit: icons from 'https://www.flaticon.com/authors/freepik'");
 });
+
+/***/ }),
+
+/***/ "./javascripts/modal.js":
+/*!******************************!*\
+  !*** ./javascripts/modal.js ***!
+  \******************************/
+/*! exports provided: setupModal */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupModal", function() { return setupModal; });
+var setupModal = function setupModal() {
+  var modal = document.getElementById("myModal");
+  var btn = document.getElementById("myBtn");
+  var span = document.getElementsByClassName("close")[0];
+
+  btn.onclick = function () {
+    modal.style.display = "block";
+  };
+
+  span.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+};
 
 /***/ })
 

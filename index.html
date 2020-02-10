@@ -18,12 +18,55 @@
   <link rel="stylesheet" type="text/css" href="./stylesheets/reset.css">
   <link rel="stylesheet" type="text/css" href="./stylesheets/game_ui.css">
   <link rel="stylesheet" type="text/css" href="./stylesheets/links.css">
+  <link rel="stylesheet" type="text/css" href="./stylesheets/modal.css">
   <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
   <script type="text/javascript" src="./javascripts/bundle.js"></script>
   <title>little ones</title>
 </head>
 <body>
+  <!-- <button id="myBtn">Open Modal</button> -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close"></span>
+        <div class="instructions-copy">
+          <div class="centered-text">
+            <b class="title-instructions">little ones</b>
+            <br>
+            <i class="italics-instructions">an interactive soundboard</i>
+          </div>
+          <br>
+          <b class="bold-instructions">How to use:</b>
+          <br>
+          - clicking on the board results in adding a 
+          <b class="definition-instructions">node</b> which will sound
+          and be added to the current <b class="definition-instructions">track</b> 
+          <br>
+          - the different colors represent notes in ascending order from left
+          to right <br>
+          - clicking on the numbers below the board will switch tracks <br>
+          - the 'solo' toggle allows you to play one or all tracks upon clicking
+          '▶'
+          <br>
+          <br>
+          <b class="bold-instructions">Objects:</b>
+          <br>
+          <b class="definition-instructions">node</b> - responsible for playing 
+          a sound associated with its position and image <br>
+          <b class="definition-instructions">track</b> - holds an ordered list 
+          of nodes
+          <br><br>
+          <div class="centered-text">
+            <i class="italics-instructions">To reopen instructions, click the</i>
+            <b class="bold-instructions">'?'</b>
+            <i class="italics-instructions">at the bottom right.</i>
+            <br>
+            <br>
+            Click anywhere outside this box to begin.
+          </div>
+        </div>
+    </div>
+  </div>
   <div class="game-title">
     <img class="title-copy"src="./assets/img/little-ones-logo.png" alt="little ones">
   </div>
@@ -84,33 +127,8 @@
         <button class="track-action" id="undo-button">↺</button>
         <button class="track-action" id="play-button">▶</button>
       </div>
-      <a class="instructions" id="intructions">?
-        <p class="instructions-copy">
-          <b class="title-instructions">little ones</b><br>
-          <i class="italics-instructions">an interactive soundboard</i>
-          <br>
-          <br>
-          <b class="bold-instructions">How to use:</b>
-          <br>
-          - clicking on the board results in adding a 
-          <b class="definition-instructions">node</b> which will sound
-          and be added to the current <b class="definition-instructions">track</b> 
-          <br>
-          - the different colors represent notes in ascending order from left
-          to right <br>
-          - clicking on the numbers below the board will switch tracks <br>
-          - the 'solo' toggle allows you to play one or all tracks upon clicking
-          '▶'
-          <br>
-          <br>
-          <b class="bold-instructions">Objects:</b>
-          <br>
-          <b class="definition-instructions">node</b> - responsible for playing 
-          a sound associated with its position and image <br>
-          <b class="definition-instructions">track</b> - holds an ordered list 
-          of nodes
-        </p>
-      </a>
+      <button class="instructions" id="myBtn">?
+      </button>
     </div>
   </div>
 </body>
