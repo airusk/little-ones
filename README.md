@@ -1,8 +1,8 @@
 # little ones
 
-## [Live Demo!](http://boneappletea.herokuapp.com/#/)
+## [Live Demo!](https://airusk.github.io/little-ones/)
 
-<img src="https://github.com/airusk/little-ones/readme-assets/main.png" align="center">
+<img src="https://github.com/airusk/little-ones/blob/master/readme-assets/main.png" align="center">
 
 ## Technologies
 
@@ -77,9 +77,9 @@ export default Bark;
 
 These receptors are reprensented as circular SVGs and are visually linked together in the order they will be played. Each track is actually stored on an array and used as a queue of Receptors.
 
-<img src="https://github.com/airusk/little-ones/readme-assets/tracks.png" align="center">
+<img src="https://github.com/airusk/little-ones/blob/master/readme-assets/tracks.png" align="center">
 
 
 ### Putting it All Together
 
-It's much more amusing with sound. Try it [live!](http://boneappletea.herokuapp.com/#/)
+It's much more amusing with sound. Try it [live!](https://airusk.github.io/little-ones/)
