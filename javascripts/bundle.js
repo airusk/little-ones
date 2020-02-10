@@ -536,8 +536,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loop", function() { return loop; });
 var loop = function loop(game) {
   var mainLoop = function mainLoop(tFrame) {
-    game.stopMainLoop = window.requestAnimationFrame(mainLoop); // window.cancelAnimationFrame(game.stopMainLoop); // Function to reset game without refresh
-
+    game.stopMainLoop = window.requestAnimationFrame(mainLoop);
     var nextTick = game.lastTick + game.tickLength;
     var numTicks = 0;
 
@@ -546,7 +545,7 @@ var loop = function loop(game) {
       numTicks = Math.floor(timeSinceTick / game.tickLength);
     }
 
-    queueUpdates(numTicks); // render( tFrame );
+    queueUpdates(numTicks);
   };
 
   var queueUpdates = function queueUpdates(numTicks) {
@@ -558,8 +557,7 @@ var loop = function loop(game) {
 
   game.lastTick = performance.now();
   game.lastRender = game.lastTick;
-  game.tickLength = 16; // game.setInitialState(); // performs whatever tasks are leftover before the mainloop must run.
-
+  game.tickLength = 16;
   mainLoop(performance.now());
 };
 

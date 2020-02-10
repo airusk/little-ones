@@ -1,7 +1,6 @@
 export const loop = (game) => {
   const mainLoop = (tFrame) => {
     game.stopMainLoop = window.requestAnimationFrame(mainLoop);
-    // window.cancelAnimationFrame(game.stopMainLoop); // Function to reset game without refresh
     var nextTick = game.lastTick + game.tickLength;
     var numTicks = 0;
 
@@ -11,7 +10,6 @@ export const loop = (game) => {
     }
 
     queueUpdates(numTicks);
-    // render( tFrame );
   }
   const queueUpdates = (numTicks) => {
     for (let i = 0; i < numTicks; i++) {
@@ -24,6 +22,5 @@ export const loop = (game) => {
   game.lastRender = game.lastTick;
   game.tickLength = 16;
 
-  // game.setInitialState(); // performs whatever tasks are leftover before the mainloop must run.
   mainLoop(performance.now());
 };
