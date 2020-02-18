@@ -133,6 +133,7 @@ class Game {
     UI.setupGameUI(this);
     UI.trackSwitches(this);
     UI.soundButtons(this);
+    // UI.keyBinds(this);
   }
 
   playAll(audioArray){

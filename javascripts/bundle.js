@@ -169,7 +169,7 @@ var getCursorPos = function getCursorPos(canvas, event) {
 /*!*****************************************************!*\
   !*** ./javascripts/game/event_listeners/game_ui.js ***!
   \*****************************************************/
-/*! exports provided: setupGameUI, trackSwitches, soundButtons */
+/*! exports provided: setupGameUI, trackSwitches, soundButtons, keyBinds */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -177,6 +177,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupGameUI", function() { return setupGameUI; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "trackSwitches", function() { return trackSwitches; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "soundButtons", function() { return soundButtons; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "keyBinds", function() { return keyBinds; });
 var setupGameUI = function setupGameUI(game) {
   var playButton = document.getElementById("play-button");
   playButton.addEventListener('click', function (event) {
@@ -264,6 +265,37 @@ var soundButtons = function soundButtons(game) {
   goatButton.addEventListener('click', function (event) {
     game.sound = "goat";
   });
+};
+var keyBinds = function keyBinds(game) {
+  var keys = {
+    left: 65,
+    right: 68,
+    up: 87,
+    down: 83
+  };
+
+  document.onkeydown = function (e) {
+    switch (e.keyCode) {
+      case keys.left:
+        alert('Left');
+        break;
+
+      case keys.right:
+        alert('Right');
+        break;
+
+      case keys.up:
+        alert('Up');
+        break;
+
+      case keys.down:
+        alert('Down');
+        break;
+
+      default:
+        return;
+    }
+  };
 };
 
 /***/ }),
@@ -515,7 +547,7 @@ function () {
       });
       _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__["setupGameUI"](this);
       _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__["trackSwitches"](this);
-      _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__["soundButtons"](this);
+      _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__["soundButtons"](this); // UI.keyBinds(this);
     }
   }, {
     key: "playAll",

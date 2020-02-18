@@ -68,3 +68,31 @@ export const soundButtons = (game) => {
     game.sound = "goat";
   });
 }
+
+export const keyBinds = (game) => {
+  const keys = {
+    left: 65,
+    right: 68,
+    up: 87,
+    down: 83
+  }
+  document.onkeydown = (e) => {
+    switch (e.keyCode) {
+      case keys.left:
+        alert('Left');
+        break;
+      case keys.right:
+        alert('Right');
+        break;
+      case keys.up:
+        alert('Up');
+        break;
+      case keys.down:
+        alert('Down');
+        break;
+
+      default:
+        return;
+    }
+  }
+}
