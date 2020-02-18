@@ -24,16 +24,25 @@ body{
   margin-left: auto;
   display: flex;
   flex-direction: column;
-  width: 900px;
+  width: 1000px;
   height: 600px;
   border-radius: 5%;
   background-color: rgb(60, 60, 60);
   padding: 40px 60px 100px 60px;
 }
 
+.game{
+  display: flex;
+  flex-direction: row;
+}
+
+.canvas-group{
+  
+}
+
 .canvas{
   position: absolute;
-  left: 0;
+  left: 8%;
   right: 0;
   margin-right: auto;
   margin-left: auto;
@@ -51,7 +60,7 @@ body{
   margin-right: auto;
   width: 900px;
   height: 30px;
-  padding-top: 610px;
+  /* padding-top: 250px; */
 }
 
 
@@ -99,6 +108,7 @@ body{
 
 .track-action:hover{
   background-color: #ccc;
+  cursor: pointer;
 }
 .track-action{
   margin-right: 3px;
@@ -217,6 +227,7 @@ input:checked + .slider:before {
 .instructions:hover{
   cursor: pointer;
   visibility: visible;
+  background-color: #ccc;
 }
 
 .instructions:hover .instructions-copy{
