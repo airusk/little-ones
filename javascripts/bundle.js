@@ -169,13 +169,15 @@ var getCursorPos = function getCursorPos(canvas, event) {
 /*!*****************************************************!*\
   !*** ./javascripts/game/event_listeners/game_ui.js ***!
   \*****************************************************/
-/*! exports provided: setupGameUI, trackSwitches */
+/*! exports provided: setupGameUI, trackSwitches, soundButtons, keyBinds */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupGameUI", function() { return setupGameUI; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "trackSwitches", function() { return trackSwitches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "soundButtons", function() { return soundButtons; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "keyBinds", function() { return keyBinds; });
 var setupGameUI = function setupGameUI(game) {
   var playButton = document.getElementById("play-button");
   playButton.addEventListener('click', function (event) {
@@ -246,6 +248,55 @@ var trackSwitches = function trackSwitches(game) {
     _loop(i);
   }
 };
+var soundButtons = function soundButtons(game) {
+  var dogButton = document.getElementById("dog-button");
+  dogButton.addEventListener('click', function (event) {
+    game.sound = "dog";
+  });
+  var catButton = document.getElementById("cat-button");
+  catButton.addEventListener('click', function (event) {
+    game.sound = "cat";
+  });
+  var birdButton = document.getElementById("bird-button");
+  birdButton.addEventListener('click', function (event) {
+    game.sound = "bird";
+  });
+  var goatButton = document.getElementById("goat-button");
+  goatButton.addEventListener('click', function (event) {
+    game.sound = "goat";
+  });
+};
+var keyBinds = function keyBinds(game) {
+  var keys = {
+    left: 65,
+    right: 68,
+    up: 87,
+    down: 83
+  };
+
+  document.onkeydown = function (e) {
+    switch (e.keyCode) {
+      case keys.left:
+        alert('Left');
+        break;
+
+      case keys.right:
+        alert('Right');
+        break;
+
+      case keys.up:
+        alert('Up');
+        break;
+
+      case keys.down:
+        alert('Down');
+        break;
+
+      default:
+        return;
+    }
+  };
+};
 
 /***/ }),
 
@@ -264,7 +315,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./event_listeners/game_ui */ "./javascripts/game/event_listeners/game_ui.js");
 /* harmony import */ var _receptor_bark__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./receptor/bark */ "./javascripts/game/receptor/bark.js");
 /* harmony import */ var _receptor_meow__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./receptor/meow */ "./javascripts/game/receptor/meow.js");
-/* harmony import */ var _receptor_receptor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./receptor/receptor */ "./javascripts/game/receptor/receptor.js");
+/* harmony import */ var _receptor_chirp__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./receptor/chirp */ "./javascripts/game/receptor/chirp.js");
+/* harmony import */ var _receptor_bleat__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./receptor/bleat */ "./javascripts/game/receptor/bleat.js");
+/* harmony import */ var _receptor_receptor__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./receptor/receptor */ "./javascripts/game/receptor/receptor.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -278,6 +331,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 
 
@@ -312,6 +367,13 @@ function () {
     this.trackValue = 0;
     this.solo = false;
     this.mute = false;
+    this.sounds = {
+      dog: _receptor_bark__WEBPACK_IMPORTED_MODULE_4__["default"],
+      cat: _receptor_meow__WEBPACK_IMPORTED_MODULE_5__["default"],
+      bird: _receptor_chirp__WEBPACK_IMPORTED_MODULE_6__["default"],
+      goat: _receptor_bleat__WEBPACK_IMPORTED_MODULE_7__["default"]
+    };
+    this.sound = "dog";
     this.outlinePositions = [];
     this.setInitialState();
   }
@@ -465,7 +527,8 @@ function () {
         var note = _util_util__WEBPACK_IMPORTED_MODULE_2__["divineNote"](_this.cursorPos, _this.panelWidth, _this.panelHeight, 8);
 
         if (note) {
-          var receptor = new _receptor_bark__WEBPACK_IMPORTED_MODULE_4__["default"](_this.cursorPos, note);
+          // const receptor = new Bark(this.cursorPos, note);
+          var receptor = new _this.sounds[_this.sound](_this.cursorPos, note);
           _util_util__WEBPACK_IMPORTED_MODULE_2__["playAudio"](receptor.soundFile, _this.mute);
 
           _this.receptors[_this.trackValue].push(receptor);
@@ -484,6 +547,7 @@ function () {
       });
       _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__["setupGameUI"](this);
       _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__["trackSwitches"](this);
+      _event_listeners_game_ui__WEBPACK_IMPORTED_MODULE_3__["soundButtons"](this); // UI.keyBinds(this);
     }
   }, {
     key: "playAll",
@@ -536,8 +600,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loop", function() { return loop; });
 var loop = function loop(game) {
   var mainLoop = function mainLoop(tFrame) {
-    game.stopMainLoop = window.requestAnimationFrame(mainLoop); // window.cancelAnimationFrame(game.stopMainLoop); // Function to reset game without refresh
-
+    game.stopMainLoop = window.requestAnimationFrame(mainLoop);
     var nextTick = game.lastTick + game.tickLength;
     var numTicks = 0;
 
@@ -546,7 +609,7 @@ var loop = function loop(game) {
       numTicks = Math.floor(timeSinceTick / game.tickLength);
     }
 
-    queueUpdates(numTicks); // render( tFrame );
+    queueUpdates(numTicks);
   };
 
   var queueUpdates = function queueUpdates(numTicks) {
@@ -558,8 +621,7 @@ var loop = function loop(game) {
 
   game.lastTick = performance.now();
   game.lastRender = game.lastTick;
-  game.tickLength = 16; // game.setInitialState(); // performs whatever tasks are leftover before the mainloop must run.
-
+  game.tickLength = 16;
   mainLoop(performance.now());
 };
 
@@ -611,6 +673,104 @@ function (_Receptor) {
 }(_receptor__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (Bark);
+
+/***/ }),
+
+/***/ "./javascripts/game/receptor/bleat.js":
+/*!********************************************!*\
+  !*** ./javascripts/game/receptor/bleat.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _receptor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./receptor */ "./javascripts/game/receptor/receptor.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var Bleat =
+/*#__PURE__*/
+function (_Receptor) {
+  _inherits(Bleat, _Receptor);
+
+  function Bleat(position, note) {
+    var _this;
+
+    _classCallCheck(this, Bleat);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Bleat).call(this, position, note));
+    _this.soundFile = "goat_bleat_".concat(note, ".ogg");
+    _this.imgFile = "goat.svg";
+    return _this;
+  }
+
+  return Bleat;
+}(_receptor__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (Bleat);
+
+/***/ }),
+
+/***/ "./javascripts/game/receptor/chirp.js":
+/*!********************************************!*\
+  !*** ./javascripts/game/receptor/chirp.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _receptor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./receptor */ "./javascripts/game/receptor/receptor.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var Chirp =
+/*#__PURE__*/
+function (_Receptor) {
+  _inherits(Chirp, _Receptor);
+
+  function Chirp(position, note) {
+    var _this;
+
+    _classCallCheck(this, Chirp);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Chirp).call(this, position, note));
+    _this.soundFile = "bird_chirp_".concat(note, ".ogg");
+    _this.imgFile = "bird.svg";
+    return _this;
+  }
+
+  return Chirp;
+}(_receptor__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (Chirp);
 
 /***/ }),
 

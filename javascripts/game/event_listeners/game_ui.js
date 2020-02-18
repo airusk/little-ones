@@ -49,3 +49,50 @@ export const trackSwitches = (game) => {
     });
   }
 }
+
+export const soundButtons = (game) => {
+  const dogButton = document.getElementById("dog-button");
+  dogButton.addEventListener('click', event => {
+    game.sound = "dog";
+  });
+  const catButton = document.getElementById("cat-button");
+  catButton.addEventListener('click', event => {
+    game.sound = "cat";
+  });
+  const birdButton = document.getElementById("bird-button");
+  birdButton.addEventListener('click', event => {
+    game.sound = "bird";
+  });
+  const goatButton = document.getElementById("goat-button");
+  goatButton.addEventListener('click', event => {
+    game.sound = "goat";
+  });
+}
+
+export const keyBinds = (game) => {
+  const keys = {
+    left: 65,
+    right: 68,
+    up: 87,
+    down: 83
+  }
+  document.onkeydown = (e) => {
+    switch (e.keyCode) {
+      case keys.left:
+        alert('Left');
+        break;
+      case keys.right:
+        alert('Right');
+        break;
+      case keys.up:
+        alert('Up');
+        break;
+      case keys.down:
+        alert('Down');
+        break;
+
+      default:
+        return;
+    }
+  }
+}

@@ -4,6 +4,8 @@ import * as Util from "./util/util";
 import * as UI from "./event_listeners/game_ui";
 import Bark from "./receptor/bark";
 import Meow from "./receptor/meow";
+import Chirp from "./receptor/chirp";
+import Bleat from "./receptor/bleat";
 import Receptor from "./receptor/receptor";
 
 class Game {
@@ -30,6 +32,8 @@ class Game {
     this.trackValue = 0;
     this.solo = false;
     this.mute = false;
+    this.sounds = {dog: Bark, cat: Meow, bird: Chirp, goat: Bleat};
+    this.sound = "dog";
     this.outlinePositions = [];
     this.setInitialState();
   }
@@ -111,7 +115,8 @@ class Game {
     this.overlayCanvas.addEventListener('click', (event) => {
       const note = Util.divineNote(this.cursorPos, this.panelWidth, this.panelHeight, 8);
       if (note) {
-        const receptor = new Bark(this.cursorPos, note);
+        // const receptor = new Bark(this.cursorPos, note);
+        const receptor = new this.sounds[this.sound](this.cursorPos, note);
         Util.playAudio(receptor.soundFile,this.mute);
         this.receptors[this.trackValue].push(receptor);
       }
@@ -127,6 +132,8 @@ class Game {
     });
     UI.setupGameUI(this);
     UI.trackSwitches(this);
+    UI.soundButtons(this);
+    // UI.keyBinds(this);
   }
 
   playAll(audioArray){
