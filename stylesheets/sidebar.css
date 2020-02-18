@@ -12,7 +12,7 @@
   padding-top: 10px;
   margin-bottom: 20px;
   height: 590px;
-  width: 85px;
+  width: 88px;
   display: flex;
   flex-direction: column;
 }
@@ -21,4 +21,8 @@
   height: 60px;
   width: auto;
   margin-bottom: 30px;
+}
+
+.sidebar-buttons img:hover{
+  cursor: pointer;
 }
